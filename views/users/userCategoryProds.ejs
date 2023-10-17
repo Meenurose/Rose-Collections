@@ -1,0 +1,189 @@
+
+<%- include('../partials/userHeader.ejs') %>
+
+
+	<!-- Start Banner Area -->
+	<section class="banner-area organic-breadcrumb">
+		<div class="container">
+			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+				<div class="col-first">
+					<h1> <%= categoryname%> </h1>
+					<nav class="d-flex align-items-center">
+						<a href="/home">Home<span class="lnr lnr-arrow-right"></span></a>
+						<a href="#">Shop<span class="lnr lnr-arrow-right"></span></a>
+						<a href="#"><%= categoryname%></a>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End Banner Area -->
+
+
+	<div class="container">
+		<div class="row">
+			<div class="col-xl-3 col-lg-4 col-md-5">
+				<div class="sidebar-categories">
+					<div class="head">Category Wise</div>
+
+					
+					<ul class="main-categories">
+						
+						<li class="main-nav-list"><a data-toggle="collapse" href="#fruitsVegetable"
+								aria-expanded="false" aria-controls="fruitsVegetable"><span
+									class="lnr lnr-arrow-right"></span><%= categoryname%><span class="number"></span></a>
+							
+						</li>
+						
+					
+					</ul>
+				</div>
+				<div class="sidebar-filter mt-50">
+					<div class="top-filter-head"></div>
+					<div class="common-filter">
+						<div class="head"></div>
+						<form action="#">
+							<ul>
+								<li class="filter-list"><input class="pixel-radio" type="radio" id="apple"
+										name="brand"><label for="apple"><span></span></label></li>
+								<li class="filter-list"><input class="pixel-radio" type="radio" id="asus"
+										name="brand"><label for="asus"><span></span></label></li>
+								
+							</ul>
+						</form>
+					</div>
+					<div class="common-filter">
+						<div class="head"></div>
+						<form action="#">
+							<ul>
+								<li class="filter-list"><input class="pixel-radio" type="" id="black"
+										name="color"><label for="black"><span></span></label></li>
+								
+								<li class="filter-list"><input class="pixel-radio" type="" id="gold"
+										name="color"><label for="gold"><span></span></label></li>
+								
+							</ul>
+						</form>
+					</div>
+					<div class="common-filter">
+						<div class="head"></div>
+						<div class="price-range-area">
+							<div ></div>
+							<div class="value-wrapper d-flex">
+								<div class=>:</div>
+								<span></span>
+								<div ></div>
+								<div class=></div>
+								<span></span>
+								<div ></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xl-9 col-lg-8 col-md-7">
+				<!-- Start Filter Bar -->
+				<div class="filter-bar d-flex flex-wrap align-items-center">
+					<div class="">
+						<select>
+							<option value="1">Category : <%= categoryname%></option>
+							<!-- <option value="1">Default sorting</option> -->
+						</select>
+					</div>
+					`
+				</div>
+				<!-- End Filter Bar -->
+				<!-- Start Best Seller -->
+				<section class="lattest-product-area pb-40 category-list">
+					<div class="row">
+						<!-- single product -->
+						<% products.forEach(function(product) { %>
+							<% if (product.status==='Listed' ) { %>
+								<div class="col-lg-4 col-md-6">
+									<div class="single-product">
+										<img class="img-fluid" src="/uploadProductImage/<%= product.image[0] %>" alt="">
+										<div class="product-details">
+											<a href="/productdetails/<%= product._id %>">
+												<h6><%= product.productname %></h6>
+											  </a>
+											
+											<div class="price">
+												<h6>Rs <%= product.price %>
+												</h6>
+												<h6 class="l-through">
+													<%= product.mrp %>
+												</h6>
+											</div>
+											<div class="prd-bottom">
+
+												<!-- <a href="/cart" class="social-info">
+													<span class="ti-bag"></span>
+													<p class="hover-text">add to bag</p>
+												</a>
+												<a href="/wishlist" class="social-info">
+													<span class="lnr lnr-heart"></span>
+													<p class="hover-text">Wishlist</p>
+												</a>
+												<a href="" class="social-info">
+													<span class="lnr lnr-sync"></span>
+													<p class="hover-text">compare</p>
+												</a>
+												<a href="/productdetails/ product._id" class="social-info">
+													<span class="lnr lnr-move"></span>
+													<p class="hover-text">view more</p>
+												</a> -->
+											</div>
+										</div>
+									</div>
+								</div>
+								<% } %>
+									<% }); %>
+										<!-- single product -->
+
+										<!-- single product -->
+
+										<!-- single product -->
+
+										<!-- single product -->
+
+										<!-- single product -->
+
+					</div>
+				</section>
+				<!-- End Best Seller -->
+				<!-- Start Filter Bar -->
+				<div class="filter-bar d-flex flex-wrap align-items-center">
+					<div class="sorting mr-auto">
+						<!-- <select>
+						<option value="1">Show 12</option>
+						<option value="1">Show 12</option>
+						<option value="1">Show 12</option>
+					</select> -->
+					</div>
+
+					<!-- my pagination code below -->
+					
+
+
+
+					<!-- my pagination code ends here -->
+				</div>
+				<!-- End Filter Bar -->
+			</div>
+		</div>
+	</div>
+
+	<!-- Start related-product Area -->
+
+	<!-- End related-product Area -->
+
+
+
+
+
+
+
+
+
+
+	<%- include('../partials/userFooter.ejs') %>

@@ -1,0 +1,306 @@
+<%- include('../partials/userHeader.ejs') %>
+
+<!-- jQuery 1.7.2+ or Zepto.js 1.0+ -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+  <div class="container">
+    <div
+      class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end"
+    >
+      <div class="col-first">
+        <h1>Product Details Page</h1>
+        <nav class="d-flex align-items-center">
+          <a href="/home">Home<span class="lnr lnr-arrow-right"></span></a>
+          <a href="#">Shop<span class="lnr lnr-arrow-right"></span></a>
+          <a href="/productdetails">product-details</a>
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End Banner Area -->
+
+<!--================Single Product Area =================-->
+<div class="product_image_area">
+  <div class="container">
+    <div class="row s_product_inner">
+      <div class="col-lg-6">
+        <div class="s_Product_carousel product-image" id="containerImage">
+          <% product.image.forEach(function(image) { %>
+          <div class="single-prd-item">
+            <img
+              class="img-fluid singleImage"
+              src="/uploadProductImage/<%=image %>"
+              alt="Image Alt"
+            />
+          </div>
+          <% }) %>
+        </div>
+      </div>
+
+      <div class="col-lg-5 offset-lg-1">
+        <div class="s_product_text">
+          <h3><%= product.productname %></h3>
+          <h2>Rs. <%= product.price %></h2>
+          <% if(product.offer) { %>
+          <div class="offer-container">
+            <p class="offer-discount">
+              <%= product.offer.discountPercentage %> %
+            </p>
+            &nbsp;&nbsp;&nbsp;
+            <p class="offer-conditions">
+              <%= product.offer.specialConditions %>
+            </p>
+          </div>
+          <% } %>
+          <ul class="list">
+            <li>
+              <a class="active" href="#"><span>Category</span> : Accessories</a>
+            </li>
+            <li>
+              <a href="#"><span>Availibility</span> : In Stock</a>
+            </li>
+          </ul>
+          <p><%= product.description %>.</p>
+
+          <!-- mine qty updation below -->
+
+          <div class="product_count input-group-btn">
+            <label for="qty">Quantity:</label>
+            <input
+              type="text"
+              name="qty"
+              id="inputQuantity"
+              maxlength="12"
+              value="1"
+              title="Quantity:"
+              class="input-text qty"
+            />
+
+            <button
+              onclick="var result = document.getElementById('inputQuantity'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
+              class="increase items-count"
+              type="button"
+            >
+              <i class="lnr lnr-chevron-up" id="inc"></i>
+            </button>
+
+            <button
+              onclick="var result = document.getElementById('inputQuantity'); var sst = result.value; if( !isNaN( sst ) && sst > 0 ) result.value--;return false;"
+              class="reduced items-count"
+              type="button"
+            >
+              <i class="lnr lnr-chevron-down" id="dec"></i>
+            </button>
+          </div>
+          <!-- mine,ends above -->
+
+          <div class="card_area d-flex align-items-center">
+            <button class="primary-btn" id="addtocart" href="#">
+              Add to Cart
+            </button>
+            
+            <%if(userId){%>
+            <% if(isWishlisted){%>
+              <button class="icon_btn bg-none"  id="" href="#">
+                <i class="lnr lnr lnr-heart" ></i>
+              </button>
+            <% }else{ %>
+              <button class="icon_btn cursor"  id="addtowishlist" href="#">
+                <i class="lnr lnr lnr-heart" ></i>
+              </button>
+              <% } %>
+              <% } %>
+          </div>
+
+          <!-- neww  -->
+
+          <!-- NEW -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--================End Single Product Area =================-->
+
+<!--================Product Description Area =================-->
+<section class="product_description_area">
+  <div class="container">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+          aria-selected="true">Description</a>
+      </li>
+     
+      </ul>
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+          <p>Latest Trends in Womens Accessories</p>
+          <p>Check out for more</p>
+        </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/userFooter.ejs') %>
+
+<style>
+  /* Image zoom */
+  #containerImage {
+    box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.3);
+    height: 500px;
+    width: 500px;
+    overflow: hidden;
+  }
+  img {
+    transform-origin: center center;
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+  }
+
+  /*Offer styling  */
+
+  .offer-container {
+    display: flex; /* Display elements in a row */
+    align-items: center; /* Vertically center elements */
+  }
+
+  .offer-discount {
+    font-size: 24px;
+    color: #e0115f;
+    margin-right: 10px;
+    font-style: italic;
+  }
+
+  .offer-conditions {
+    font-size: 18px;
+    color: #e0115f;
+    font-style: italic;
+  }
+
+  /* Styles for wishlist icon */
+  
+  .bg-none{
+    background-color: red !important;
+    border: none;
+  }
+
+  .icon_btn:hover:after {
+      opacity: 0 !important;
+    }
+    .cursor{
+      cursor: pointer;
+    }
+
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    //Image Zoom
+    const container = document.getElementById("containerImage");
+
+    //const img = document.querySelector(".singleImage");
+    //const images = document.getElementsByClassName("singleImage");
+
+    container.addEventListener("mousemove", onZoom);
+    container.addEventListener("mouseover", onZoom);
+    container.addEventListener("mouseleave", offZoom);
+    let img;
+    function onZoom(e) {
+      const parent = document.querySelector(".owl-item.active");
+      img = parent.querySelector(".singleImage");
+      const x = e.clientX - e.target.offsetLeft;
+      const y = e.clientY - e.target.offsetTop;
+
+      // images.forEach((img) => {
+      img.style.transformOrigin = `${x}px ${y}px`;
+      img.style.transform = "scale(2.5)";
+      // })
+    }
+  });
+
+  function offZoom(e) {
+    const parent = document.querySelector(".owl-item.active");
+    img = parent.querySelector(".singleImage");
+    // images.forEach((img) => {
+    img.style.transformOrigin = `center center`;
+    img.style.transform = "scale(1)";
+    // })
+  }
+
+  //Quantity updation code (add to cart code)
+  const displayCount = document.getElementById("inputQuantity");
+  const addToCartModal = document.getElementById("addToCartModal");
+  const myButton = document.querySelector("#addtocart");
+
+  myButton.addEventListener("click", function (e) {
+    console.log("clicked on add to cart button ");
+    console.log("quantity: displayCount.value= ", displayCount.value);
+
+    fetch("/addtocart", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        productId: "<%= product._id %>",
+        quantity: displayCount.value,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        Swal.fire({
+          text: "Product added to cart!",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+
+        // setTimeout(() => {
+        //   addToCartModal.style.display = "none";
+        // }, 2000);
+      })
+      .catch((error) => {
+        console.log("signing in...");
+        window.location.href = "/signin";
+      });
+  });
+
+
+
+//add to wishlist code:
+//const addToWishlistIcon = document.getElementById('addtowishlist')
+const myButton2 = document.querySelector("#addtowishlist");
+
+myButton2.addEventListener('click', function (e)  {
+  console.log("clicked on add to wishlisttt button ");
+
+  fetch('/wishlist',{
+    method :'POST',
+    headers: {
+      'Content-Type':'application/json',
+    },
+    body: JSON.stringify({
+        productId: "<%= product._id %>"
+    })
+  })
+  .then((response) => response.json())
+      .then((data) => {
+        Swal.fire({
+          text: "Product added to wishlist!",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+      })
+      .catch((error) => {
+        console.log("signing in...");
+        window.location.href = "/signin";
+      });
+      window.location.reload()
+});     
+
+
+</script>

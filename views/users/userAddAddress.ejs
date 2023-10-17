@@ -1,0 +1,107 @@
+<%- include('../partials/userHeader.ejs') %>
+
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Add Address</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="category.html">Add Address</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<div class="container mt-100 px-20">
+
+    <div class="mb-4">
+
+        <h2>Update User Details</h2>
+        <span></span>
+        
+    </div>
+    
+    <div class="row">
+
+        <div class="col-md-8">
+        
+            <div class="mt-4 mb-4">
+
+                <h6 class="text-uppercase">Add Address</h6>
+
+                <form action="/addaddress" method="POST" id="addaddressform">
+
+                    <!-- adding name, email ,phone num. -->
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                             <div class="inputbox mt-3 mr-2"> <input type="text" name="name" class="form-control" required="required" placeholder="Name"> </div>
+                        
+                        </div>
+                        <div class="col-md-6">
+                            <div class="inputbox mt-3 mr-2"> <input type="email" name="email" class="form-control" required="required" placeholder="Email"> </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                             <div class="inputbox mt-3 mr-2"> <input type="tel" name="phonenumber"
+                                oninput="validateNumber(event)" pattern="[0-9]{10}" maxlength="10" 
+                                 class="form-control" required="required" placeholder="Phonenumber">
+                                 </div>
+                        
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                             <div class="inputbox mt-3 mr-2"> <input type="text" name="address" class="form-control" required="required" placeholder="Address"> </div>
+                        
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                            <div class="inputbox mt-3 mr-2"> <input type="text" name="city" class="form-control" required="required" placeholder="City"> </div>
+                        
+                        </div>
+                        
+
+                    </div>
+
+                   <div class="row mt-2">
+
+                        <div class="col-md-6">
+
+                            <div class="inputbox mt-3 mr-2"> <input type="text" name="state" class="form-control" required="required" placeholder="State"> </div>
+                        
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <div class="inputbox mt-3 mr-2"> <input type="text" name="pincode" class="form-control" required="required" placeholder="Pincode"> </div>
+                        
+                        </div>   
+
+                    </div>
+                    <br>
+                    <button class="genric-btn info">UPDATE ADDRESS</button>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+    
+</div>
+  
+
+<%- include('../partials/userFooter.ejs') %>
+
+<script src="javascripts/signupOtpValidation.js"></script>
+
+
+
+

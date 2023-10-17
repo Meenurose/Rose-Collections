@@ -1,0 +1,94 @@
+<%- include('../partials/userHeader.ejs') %>
+
+
+ <!-- Start Banner Area -->
+ <section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>User Profile</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="/home">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="category.html">Cart</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+
+
+<div class="container mt-5 px-5">
+
+    <div class="mb-4">
+
+        <h2>Update User Details</h2>
+        <span></span>
+        
+    </div>
+    
+    <div class="row">
+
+        <div class="col-md-8">
+        
+            <div class="mt-4 mb-4">
+
+                <h5 class="text-uppercase">PROFILE INFORMATION</h5>
+
+                <form action="/userprofile" method="POST" id="userprofileform">
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div class="inputbox mt-3 mr-2"> <input type="text" name="name" class="form-control" required="required" value="<%= user.name %>"> </div>
+                            
+                        </div>
+
+                        <!-- <div class="col-md-6">
+                            <div class="inputbox mt-3 mr-2"> <input type="text" name="lastname" class="form-control"  value=""> </div>
+                            
+                        </div> -->
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <div class="inputbox mt-3 mr-2"> <input type="text" name="email" class="form-control" required="required" value="<%= user.email %>"> </div>
+                            
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="inputbox mt-3 mr-2"> <input type="text" name="phonenumber" class="form-control" required="required" value="<%= user.phonenumber %>"> </div>
+                            
+                        </div>
+                    </div>
+
+
+                    <br>
+                  
+                    <button class="genric-btn success" type="submit">UPDATE USER</button>
+              
+                </form>
+            </div>
+        </div>
+    </div>
+
+        <h5 class="text-uppercase" >ADDRESS INFORMATION</h5>
+        <div class="mt-4 mb-4 d-flex justify-content-between">
+            
+                <% user.address.forEach(function(item) { %>
+                <div class="border border-2 p-3">
+                    <p>Address: <%= item.address %></p>
+                    <p>City: <%= item.city %></p>
+                    <p>State: <%= item.state %></p>
+                    <p>Pincode: <%= item.pincode %></p>
+                </div>
+                <% }); %>
+              
+            <a href="/addaddress"> <button class="genric-btn success-border">+ ADD ADDRESS</button></a>
+
+        </div>
+   
+</div>
+
+
+
+
+<%- include('../partials/userFooter.ejs') %>

@@ -1,0 +1,176 @@
+<%- include('../partials/userHeader.ejs') %>
+
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Confirmation</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="/home">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="/orderconfirmation">Confirmation</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+
+<!--================Order Details Area =================-->
+<section class="order_details section_gap">
+    <div class="container">
+        <h3 class="title_confirmation">Thank you. Your order has been received.</h3>
+        <div class="row order_d_inner">
+            <div class="col-lg-6">
+                <div class="details_item">
+                    <h4>Order Info</h4>
+                    <ul class="list">
+                        <li><a href="#"><span>Order ID</span> : <%= order._id %></a></li>
+                        <li><a href="#"><span>Date</span> : <%= new Date(order.createdAt).toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true })%></a></li>
+                        <li><a href="#"><span>Total</span> : <%= order.finalPrice %></a></li>
+                        <li><a href="#"><span>Payment method</span> : <%= order.paymentMode %></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="details_item">
+                    <h4>Billing Address</h4>
+                    <ul class="list">
+                        <li><a href="#"><span>Address</span> : <%= order.address.address %></a></li>
+                        <li><a href="#"><span>City</span> : <%= order.address.city %></a></li>
+                        <li><a href="#"><span>State</span> : <%= order.address.state %></a></li>
+                        <li><a href="#"><span>Pincode </span> : <%= order.address.pincode %></a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- <div class="col-lg-4">
+                <div class="details_item">
+                    <h4>Shipping Address</h4>
+                    <ul class="list">
+                        <li><a href="#"><span>Street</span> : 56/8</a></li>
+                        <li><a href="#"><span>City</span> : Los Angeles</a></li>
+                        <li><a href="#"><span>Country</span> : United States</a></li>
+                        <li><a href="#"><span>Postcode </span> : 36952</a></li>
+                    </ul>
+                </div>
+            </div> -->
+        </div>
+        <div class="order_details_table">
+            <h2>Order Details</h2>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Product</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Total</th>
+                        </tr>
+                    </thead
+                    <% order.items.forEach(function(item) { %>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <p><%= item.productId.productname %> </p>
+                            </td>
+                            <td>
+                                <h5>x <%= item.quantity %></h5>
+                            </td>
+                            <td>
+                                <p><%= item.price %></p>
+                            </td>
+                        </tr>
+                        <% }) %> 
+                        <tr>
+                            <td>
+                                <h4>Subtotal</h4>
+                            </td>
+                            <td>
+                                <h5></h5>
+                            </td>
+                            <td>
+                                <p><%= order.totalAmount %></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h4>Coupon Discount</h4>
+                            </td>
+                            <td>
+                                <h5></h5>
+                            </td>
+                            <td>
+                                <p><%= order.discountAmount %></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h4>Grand Total</h4>
+                            </td>
+                            <td>
+                                <h5></h5>
+                            </td>
+                            <td>
+                                <p><%= order.finalPrice %></p>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+
+        <br>
+        <% if(order.orderStatus === 'pending'||order.orderStatus === 'placed'){%>
+            <button class="genric-btn danger"  onclick="cancelOrder('<%= order._id %>')" >Cancel Order</button></a>
+            <button class="genric-btn warning" onclick="returnOrder('<%= order._id %>')" >Return Order</button></a>
+        <%}%>
+        <!-- order stat- delivered, here -->
+            <!-- <a class="btn btn-secondary print ms-2" href="#"><i class="icon material-icons md-print"></i></a> -->
+    </div>
+
+    </div>
+</section>
+<!--================End Order Details Area =================-->
+
+
+<%- include('../partials/userFooter.ejs') %>
+
+<script>
+
+function cancelOrder(orderId) {
+    Swal.fire({
+        title: 'Are you sure you want to Cancel the order?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, Cancel it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // If the user confirms the action, perform the deletion
+            window.location.href = `/editorderdetails/${orderId}?action=cancel`;
+        }
+    });
+}
+
+function returnOrder(orderId) {
+    Swal.fire({
+        title: 'Are you sure you want to Return the order?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, Return it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // If the user confirms the action, perform the deletion
+            window.location.href = `/editorderdetails/${orderId}?action=return`;
+        }
+    });
+}
+
+
+</script>

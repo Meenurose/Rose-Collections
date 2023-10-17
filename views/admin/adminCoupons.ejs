@@ -1,0 +1,191 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Admin || Rose Collections</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/imgs/theme/favicon.svg">
+    <!-- Template CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="screen-overlay"></div>
+    <aside class="navbar-aside" id="offcanvas_aside">
+        <div class="aside-top">
+            <a href="index.html" class="brand-wrap">
+                <img src="/assets/imgs/theme/logo.png" class="logo" alt="Rose Collections">
+            </a>
+            <div>
+                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i> </button>
+            </div>
+        </div>
+        <nav>
+            <ul class="menu-aside">
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/adminhome"> <i class="icon material-icons md-home"></i>
+                        <span class="text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="menu-item has-submenu ">
+                    <a class="menu-link" href="page-products-list.html"> <i class="icon material-icons md-shopping_bag"></i>
+                        <span class="text">Products</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/adminproducts">Product List</a>
+                        <a href="/admin/admincategory">Categories</a>
+                    </div>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="page-orders-1.html"> <i class="icon material-icons md-shopping_cart"></i>
+                        <span class="text">Orders</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/adminorderlists">Order list 1</a>
+                    </div>
+                </li>
+                <li class="menu-item has-submenu active">
+                    <a class="menu-link" href="page-sellers-cards.html"> <i class="icon material-icons md-store"></i>
+                        <span class="text">Coupons</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/coupons">Coupon Lists</a>
+                    </div>
+                </li>
+             
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="#"> <i class="icon material-icons md-person"></i>
+                        <span class="text">Account</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/userslist">Users List</a>
+                    </div>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" disabled href="#"> <i class="icon material-icons md-pie_chart"></i>
+                        <span class="text">Sales</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/salesreport">Sales Report</a>
+                    </div>
+                </li>
+
+                <li class="menu-item has-submenu" >
+                    <a class="menu-link" disabled href="#"> <i class="icon material-icons md-stars"></i>
+                        <span class="text">Banners</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/bannerlist">Banner Lists</a>
+                    </div>
+                </li>
+
+            </ul>
+            <hr>
+        </nav>
+    </aside>
+
+
+     <main class="main-wrap">
+        <header class="main-header navbar">
+            <div class="col-search"> </div>
+            <div class="col-nav">
+                <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i class="material-icons md-apps"></i> </button>
+                <ul class="nav">
+                   
+                    <li class="nav-item">
+                        <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i> </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
+                    </li>
+                    <li class="dropdown nav-item">
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="/assets/imgs/people/avatar2.jpeg" alt="User"></a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                            <a class="dropdown-item text-danger" href="/admin/logout"><i class="material-icons md-exit_to_app"></i>Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </header>
+
+
+    <section class="content-main">
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">Coupon List</h2>
+                <p>Add Coupons</p>
+            </div>
+            <div>
+                <a href="/admin/addcoupon" class="btn btn-primary btn-sm rounded">Create new</a>
+            </div>
+        </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                       
+                        <!-- <div class="col-md-9"> -->
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <!-- <th>ID</th> -->
+                                            <th  style="width: 35%;">Coupon Name</th>
+                                            <th  style="width: 35%;">Coupon Description</th>
+                                            <!-- <th>Slug</th>
+                                            <th>Order</th> -->
+                                            <th class="text-end"  style="width: 30%;">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% coupon.forEach(function(item) { %>
+                                        <tr>
+                                            <td><b><%= item.code %></b></td>
+                                            <td><%= item.description %></td>
+                                          
+                                            <td class="text-end">
+
+                                                <a href="/admin/coupon/edit?_id=<%= item._id %>">
+                                                    <button class="btn btn-primary">Edit</button>
+                                                </a>
+
+                                            </td>
+                                        </tr>
+                                        <% }); %>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        <!-- </div> col// -->
+                    </div> <!-- .row // -->
+                </div> <!-- card body .// -->
+            </div> <!-- card .// -->
+
+            <div class="pagination-area mt-15 mb-50">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-start">
+                      <% for(let i=1; i<= 2;i++) { %>
+                        <% if(i===currentPage){ %>
+                            <li class="page-item active"><a class="page-link" href="#"><%= i %></a></li>
+                        <% } else { %>
+                        <li class="page-item"><a class="page-link" href="/admin/coupons?page=<%= i %>"><%= i %></a></li>
+                        <% } %>
+                    <% } %>
+                    </ul>
+                </nav>
+            </div>
+
+
+
+        </section> <!-- content-main end// -->
+        
+
+
+
+        <%- include('../partials/adminFooter.ejs') %>

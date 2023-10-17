@@ -1,0 +1,435 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Admin || Rose Collections</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/imgs/theme/favicon.svg">
+    <!-- Template CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="screen-overlay"></div>
+    <aside class="navbar-aside" id="offcanvas_aside">
+        <div class="aside-top">
+            <a href="index.html" class="brand-wrap">
+                <img src="/assets/imgs/theme/logo.png" class="logo" alt="Rose Collections">
+            </a>
+            <div>
+                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i> </button>
+            </div>
+        </div>
+        <nav>
+            <ul class="menu-aside">
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/adminhome"> <i class="icon material-icons md-home"></i>
+                        <span class="text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="menu-item has-submenu active">
+                    <a class="menu-link" href="page-products-list.html"> <i class="icon material-icons md-shopping_bag"></i>
+                        <span class="text">Products</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/adminproducts">Product List</a>
+                        <a href="/admin/admincategory">Categories</a>
+                    </div>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="page-orders-1.html"> <i class="icon material-icons md-shopping_cart"></i>
+                        <span class="text">Orders</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/adminorderlists">Order list</a>
+                    </div>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="page-sellers-cards.html"> <i class="icon material-icons md-store"></i>
+                        <span class="text">Coupons</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/coupons">Coupon Lists</a>
+                    </div>
+                </li>
+             
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="#"> <i class="icon material-icons md-person"></i>
+                        <span class="text">Account</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/userslist">Users List</a>
+                    </div>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" disabled href="#"> <i class="icon material-icons md-pie_chart"></i>
+                        <span class="text">Sales</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/salesreport">Sales Report</a>
+                    </div>
+                </li>
+
+                <li class="menu-item has-submenu " >
+                    <a class="menu-link" disabled href="#"> <i class="icon material-icons md-stars"></i>
+                        <span class="text">Banners</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/bannerlist">Banner Lists</a>
+                    </div>
+                </li>
+
+            </ul>
+            <hr>
+        </nav>
+    </aside>
+
+
+
+<section class=" gradient-custom">
+  <div class="content-header">
+  <div class="container py-5 h-100">
+    <div class="row justify-content-center align-items-center h-100">
+      <div class="col-12 col-lg-9 col-xl-7">
+        <div
+          class="card shadow-2-strong card-registration"
+          style="border-radius: 15px"
+        >
+          <div class="card-body p-4 p-md-5">
+            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Edit Products</h3>
+            <form 
+            id="productForm"
+              action="/admin/editproduct?_id=<%= products._id %>"
+              method="POST"
+              enctype="multipart/form-data"
+            >
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                <input name="id" value="<%= products._id %>" hidden />
+                  <div class="form-outline">
+                    <label class="form-label" for="productName"
+                      >Product Name</label
+                    >
+                    <input
+                      type="text"
+                      id="productName"
+                      class="form-control form-control-lg"
+                      value="<%= products.productname %>"
+                      name="productname"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                  <div class="form-outline">
+                    <label class="form-label" for="categoryname"
+                      >Product Category</label>
+                    <!-- <input
+                      type="text"
+                      id="productName"
+                      class="form-control form-control-lg"
+                      name="productcategory"
+                    /> -->
+                    <div class="col-12">
+                      <select class="select form-control-lg" name="categoryname">
+                        <% category.forEach(function(item) { %>
+                            <% if (products.categoryname._id.toString() === item._id.toString()) { %>
+                              <option value="<%= item._id%>" selected><%= item.categoryname %></option>
+                            <% } else { %>
+                              <option value="<%= item._id %>"><%= item.categoryname %></option>
+                            <% } %>
+                          <% }); %>
+                      </select>
+                   </div>
+
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-4 d-flex align-items-center"></div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-4 pb-2">
+                  <div class="form-outline">
+                    <label class="form-label" for="description"
+                      >Product Description</label
+                    >
+                    <input
+                      type="text"
+                      id="description"
+                      class="form-control form-control-lg"
+                      value="<%= products.description %>"
+                      name="description"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-6 mb-4 pb-2">
+                  <div class="form-outline">
+                    <label class="form-label" for="mrp">MRP</label>
+                    <input
+                      type="number"
+                      id="mrp"
+                      class="form-control form-control-lg"
+                      value="<%= products.mrp %>"
+                      name="mrp"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-4 pb-2">
+                  <div class="form-outline">
+                    <label class="form-label" for="price">Offer Price</label>
+                    <input
+                      type="number"
+                      id="price"
+                      value="<%= products.price %>"
+                      name="price"
+                      class="form-control form-control-lg"
+                    />                                      
+                  </div>
+                </div>
+
+                <div class="col-md-6 mb-4 pb-2">
+                  <div class="form-outline">
+                    <label class="form-label" for="addimage">Add images</label>
+                    <input type="file" name="image" accept="image/*" multiple />
+                  <div>
+                <% products.image.forEach(function(item) { %>
+                    <div>
+                        <img src="/uploadProductImage/<%= item %>" height="50px" />
+                        
+                  
+                        <button data-id="<%= item %>" data-product-id="<%= products._id %>" class="removeImagesButton ms-4">
+                          Remove Image</button>
+                        
+                    </div>
+                <% }); %>
+                  </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                
+               <div class="col-md-6 mb-4 pb-2">
+                <div class="form-outline">
+                  <label class="form-label" for="price">Stock</label>
+                  <input
+                    type="number"
+                    id="stock"
+                    value="<%= products.stock %>"
+                    name="stock"
+                    class="form-control form-control-lg"
+                  />
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-4 pb-2">
+                <div class="form-outline">
+                  <label class="form-label" for="price">Offer Percentage</label>
+                  <input
+                    type="number"
+                    id="offerpercent"
+                    name="offerpercent" 
+                    
+                    value=""
+                    
+                    class="form-control form-control-lg"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="row">              
+                <div class="col-md-6 mb-4 pb-2">
+                  <div class="form-outline">
+                    <label class="form-label" for="price">Offer Special Conditions</label>
+                    <input
+                      type="text"
+                      id="offercondn"
+                      name="offercondn"
+                     
+                      <% if(products.offer) { %>
+                        value="<%= products.offer.specialConditions %>"
+                        <% }else { %>
+                        value="<%= %>"
+                        <%} %>
+                        class="form-control form-control-lg"
+                 
+                    />
+                  </div>
+                </div>             
+
+              <div class="col-md-6 mb-4 pb-2">
+                
+                <select class="select form-control-lg" name="status">
+                  <option value="Listed" <%= products.status === 'Listed' ? 'selected' : '' %>>Listed</option>
+                  <option value="Delisted" <%= products.status === 'Delisted' ? 'selected' : '' %>>Delisted</option>
+                </select>
+                
+              </div>
+              
+           </div>
+
+              <div class="mt-4 pt-2">
+                <button class="btn btn-primary btn-lg" type="submit">
+                 UPDATE PRODUCT
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+
+<%- include('../partials/adminFooter.ejs') %>
+
+<script>
+
+// function deleteItem(productId,item) {
+//   // Show a confirmation dialog using Swal
+//   Swal.fire({
+//     title: 'Are you sure?',
+//     text: 'You won\'t be able to revert this!',
+//     icon: 'warning',
+//     showCancelButton: true,
+//     confirmButtonColor: '#d33',
+//     cancelButtonColor: '#3085d6',
+//     confirmButtonText: 'Yes, delete it!'
+//   }).then((result) => {
+//     if (result.isConfirmed) {
+//       window.location.href = `/removeimages/${productId}`;
+    
+//       fetch(`/removeimages/${productId}`, {
+//         method: 'DELETE'
+//       })
+//       .then(response => {
+//         if (response.status === 200) {
+//           // Successful deletion, remove the item from the DOM
+//          const itemElement = document.querySelector(`[data-id="${productId}"]`);
+//           if (item) {
+//             item.remove();
+//           }
+//           Swal.fire('Deleted!', 'The item has been deleted.', 'success');
+//         } else {
+//           Swal.fire('Error', 'An error occurred while deleting the item.', 'error');
+//         }
+//       })
+//       .catch(error => {
+//         console.error('Error:', error);
+//         Swal.fire('Error', 'An error occurred while deleting the item.', 'error');
+//       });
+//     }
+//   });
+// }
+///////////////////////////////
+
+const button = document.querySelectorAll('.removeImagesButton')
+button.forEach(item=>{
+
+item.addEventListener('click', function(e) {
+
+console.log("Clicked on Remove image..1")
+ const file = e.target.getAttribute("data-id")
+ //const productId = e.target.getAttribute("data-product-id");
+ console.log("File is:: ",file)
+ console.log("Clicked on Remove image..2")
+
+//  Swal.fire({
+//     title: 'Are you sure?',
+//     text: 'You won\'t be able to revert this!',
+//     icon: 'warning',
+//    showCancelButton: true,
+//    confirmButtonColor: '#d33',
+//    cancelButtonColor: '#3085d6',
+//    confirmButtonText: 'Yes, delete it!'
+//  })  //swal.fire
+  //  .then((result) => {
+  //    if (result.isConfirmed) {
+
+       fetch('/admin/removeimages', {
+         method: 'POST',
+         headers: {
+           'Content-Type': 'application/json'
+         },
+         body: JSON.stringify({ id: '<%= products._id %>', file }) // Assuming you have access to the product ID in your EJS template
+       })   //fetch
+
+      //window.location.href = `/product/${products._id }/image/${file}`;
+
+  .then(response => response.json())  
+  .then(data => {    
+    if(data.success){
+  //     Swal.fire('Deleted!', 'The item has been deleted.', 'success');
+  //     {location.reload(true)}
+  //   }
+  //   else{
+  //     Swal.fire('Error', 'An error occurred while deleting the item.', 'error');
+         {location.reload(true)}
+    }
+
+ 
+  })   //.then(data=> ...)
+  .catch(error => {
+     console.error(error);
+     //res.render('users/error404');
+
+  }); //catch error 
+
+//   }    //  if(result.isConfirmed..)
+// });    //.then(result..)
+  
+
+ })     //item.addEventListener
+});    //button.forEach
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+  // // Add an event listener to all elements with the "removeImagesButton" class
+  // document.addEventListener("click", function(event) {
+  //     // Check if the clicked element has the "removeImagesButton" class
+  //     if (event.target.classList.contains("removeImagesButton")) {
+  //         // Get the parent <div> element
+  //         const parentDiv = event.target.parentElement;
+          
+  //         // Get the data-id attribute value from the button
+  //         const itemID = event.target.getAttribute("data-id");
+          
+  //         // Send an AJAX request to delete the image on the server-side
+  //         fetch(`/removeImage/${itemID}`, { method: "DELETE" })
+  //             .then(response => {
+  //                 if (response.ok) {
+  //                     // Image successfully removed from the server
+  //                     // Now, remove the parent <div> element from the DOM
+  //                     parentDiv.remove();
+  //                 } else {
+  //                     // Handle server-side error
+  //                     console.error("Failed to delete the image.");
+  //                 }
+  //             })
+  //             .catch(error => {
+  //                 // Handle network error
+  //                 console.error("Network error:", error);
+  //             });
+  //     }
+  // });
+
+
+
+</script>
+
+

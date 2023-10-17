@@ -1,0 +1,184 @@
+<%- include('../partials/userHeader.ejs') %>
+
+ <!-- Start Banner Area -->
+ <section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Wishlist</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="/home">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="/wishlist">Wishlist</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+
+
+<% let i=0%>
+<% if(wishlist.items.length==0) { %>
+<div class="container-fluid mt-100">
+    <div class="row px-xl-5">
+      <div class="col-md-12">
+        <div class="card">
+            <div class="card-body cart">
+              <div class="col-sm-12 empty-cart-cls text-center">
+                <img src="img/wishlist-icon.png" width="100" height="130" class="img-fluid mb-4 mr-3">
+                <h3><strong>Your haven't added any items to wishlist yet!</strong></h3>
+                <h4>Save your favorite items, come back later & purchase easily !!!</h4>
+                <a href="/home" class="btn btn-primary cart-btn-transform m-3" data-abc="true">Continue shopping</a>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% } else { %>
+
+<!--================WIshlist Area =================-->
+<section class="cart_area">
+    <div class="container">
+        <div class="cart_inner">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="width:5%;">Sl.No.</th>
+                            <th scope="col" style="width:35%;">Product</th>
+                            <th scope="col" style="width:10%;;">Price</th>
+                            <!-- <th scope="col" style="width:15%;">Quantity</th> -->
+                            <!-- <th scope="col" style="width:15%;">Offer (%)</th> -->
+                            <th scope="col" style="width:15%;">Add to Cart</th>
+                            <th scope="col" style="width:5%;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <% wishlist.items.forEach(function(item) { %>                    
+                        <% i++ %>                                        
+                          <tr class="cartPrice" data-price="<%= item.product.price%>" data-id="<%= item.product._id %>">                    
+                            <td class="align-middle num">
+                              <%=i%>
+                            </td>
+                            <td class="align-middle"><img src="/uploadProductImage/<%= item.product.image[0] %>" alt=""
+                                style="width: 50px;">
+                              <%= item.product.productname %>
+                            </td>
+                            <td class="align-middle price">
+                              <%= item.product.price.toFixed(2) %>
+                            </td>
+                    
+                            <td class="align-middle total-price">
+                              <button class="genric-btn primary-border addToCartButton" data-product-id="<%= item.product._id %>" href="#">
+                                Add to Cart
+                              </button>
+                            </td>
+                    
+                            <td class="align-middle">
+                              <button class="btn btn-sm btn-danger" onclick="deleteItem('<%= wishlist._id %>', '<%= item.product._id %>')">
+                                <i class="fa fa-times"></i>
+                              </button>
+                              </a>
+                            </td>
+                    
+                    
+                          </tr>
+                    
+                          <% }); %>
+                                           
+                            <tr class="out_button_area">
+                              <td></td>
+                              <td> </td>
+                              <td> </td>
+                              <td> </td>
+                              <td>
+                                <div class="checkout_btn_inner d-flex align-items-center">
+                                  <a class="gray_btn" href="/home">Continue Shopping</a>
+                                  <a class="primary-btn" href="/cart">Proceed to cart</a>
+                                  <!-- <button class=" primary-btn" onclick="proceedToCheckout()">Proceed To Checkout</button> -->                    
+                                </div>
+                              </td>
+                            </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+          
+    <!-- container -->
+    </div>     
+    <% } %>
+      
+</section>
+
+<!--================End Cart Area =================-->
+<%- include('../partials/userFooter.ejs') %>
+
+
+<script>
+    
+  
+/////////////////////////////////////////////////////for alert box= while deleting////////////////////// Sweetalert2
+
+function deleteItem(wishlistId,productId) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // If the user confirms the action, perform the deletion
+            window.location.href = `/wishlist/${wishlistId}/product/${productId}`;
+        }
+    });
+}
+////////////////
+
+////////////////add to cart from wishlist page/////////////////////////
+
+const addButtonElements  = document.querySelectorAll(".addToCartButton");
+//const productId = addButtonElements.getAttribute("data-product-id");
+
+addButtonElements.forEach((button)  => {
+
+button.addEventListener("click", function (e) {  
+  const productId = button.getAttribute("data-product-id");
+  console.log("clicked on add to cart button ,,,in wishlist page, for ProductId:: ", productId);
+  
+  fetch("/addtocart", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      productId: productId,
+      quantity: 1,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      Swal.fire({
+        text: "Product added to cart!",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
+
+    })
+    .catch((error) => {
+      console.log("signing in...from wishlist,trying to access cart");
+      window.location.href = "/signin";
+    });
+});
+
+})
+
+
+</script>
+
+
+

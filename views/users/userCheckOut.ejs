@@ -1,0 +1,399 @@
+
+<%- include('../partials/userHeader.ejs') %>
+
+  <!-- Start Banner Area -->
+  <section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Checkout</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="/home">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="/checkout">Checkout</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+
+<!--================Checkout Area =================-->
+<section class="checkout_area section_gap">
+    <div class="container">
+       
+<div>
+   
+ <!-- <div class="container"> -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h5 class="section-title position-relative text-uppercase mb-3">
+                <span class="">Select the Shipping Address</span>
+            </h5>
+            <% if(user.address.length >0)  { %>
+            <div class="bg-light p-3 mb-5">
+                <div class="row">
+                    
+                    <% for(let i = 0; i < user.address.length; i++) { %>
+                    <div class="col-md-3 mb-3">
+                        <div class="border p-3">
+                            <%  item = user.address[i] %>
+                           
+                            <label>
+                                <input type="radio" id="defaultaddress" name="defaultaddress"
+                                       value="defaultaddress" data-address="<%= item._id %>">
+                                <strong><%= item.name %></strong>
+                            </label>
+                            <p>
+                                <%= item.phonenumber %><br>
+                                <%= item.address %>,<br>
+                                <%= item.city %>, <%= item.state %>, <%= item.pincode %>
+                            </p>
+                             <!-- Adding an "Edit" button  -->
+                             <div class="edit-button">
+                                
+                                <a href="/editaddress?name=<%= item.name%>&phonenumber=<%= item.phonenumber%>&email=<%= item.email%>&<%= item.address %>&address=<%= item.address %>&city=<%= item.city %>&state=<%= item.state %>&pincode=<%= item.pincode %>&addressId=<%=item._id%>">
+
+
+                                <button class="btn btn-primary btn-sm genric-btn info">Edit</button>
+                            </a>
+                             </div>
+                        </div>
+                    </div>
+                    <% } %>
+                    
+                </div>
+               
+            </div>
+            <% } %>
+            <% if(user.address.length === 0)  { %>
+            <span> No Address found. Add new address here </span>
+            <% } %>
+            <div class="col-md-12">
+                <div class="custom-control custom-checkbox mt-3">
+                    <input type="checkbox" class="custom-control-input" id="shipto">
+                    <label class="custom-control-label" for="shipto" data-toggle="collapse"
+                           data-target="#shipping-address">Ship to a different address</label>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- </div> -->
+
+
+<!-- new code ends here -->
+<br>
+<div class="collapse mb-5" id="shipping-address">
+    <h5 class="section-title position-relative text-uppercase mb-3"><span class="">Add Alternate Shipping Address</span></h5>
+    <div class="bg-light p-30">            
+        <div class="row">
+          <div class="col-md-8">              
+            <div class="mt-4 mb-4">
+                <form action="/addalternateaddress" method="POST" id="addressform">
+
+                     <!-- adding name, email ,phone num. -->
+                     <div class="row mt-3">
+                        <div class="col-md-6">
+                             <div class="inputbox mt-3 mr-2"> <input type="text" name="name" class="form-control" required="required" placeholder="Name"> </div>
+                        
+                        </div>
+                        <div class="col-md-6">
+                            <div class="inputbox mt-3 mr-2"> <input type="email" name="email" class="form-control" required="required" placeholder="Email"> </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                             <div class="inputbox mt-3 mr-2"> <input type="tel" name="phonenumber"
+                                oninput="validateNumber(event)" pattern="[0-9]{10}" maxlength="10" 
+                                 class="form-control" required="required" placeholder="Phonenumber">
+                                 </div>
+                        
+                        </div>
+                    </div>
+
+
+                    <div class="row mt-3">                        
+                        <div class="col-md-6">
+                            <div class="inputbox mt-3 mr-2"> <input type="text" name="address" class="form-control"
+                                required="required" placeholder="Address"> </div>
+                        </div>
+
+                        <div class="col-md-6"> <div class="inputbox mt-3 mr-2"> <input type="text" name="city"
+                             class="form-control" required="required" placeholder="City"> </div>
+                        </div>
+                    </div>
+
+                   <div class="row mt-2">
+                        <div class="col-md-6">
+                            <div class="inputbox mt-3 mr-2"> <input type="text" name="state" class="form-control" required="required" placeholder="State"> </div>
+                        
+                        </div>
+                        <div class="col-md-6">
+                            <div class="inputbox mt-3 mr-2"> <input type="text" name="pincode" class="form-control" required="required" placeholder="Pincode"> </div>
+                        
+                        </div>   
+                   </div>
+
+                    <br>
+                    <a href=""><button class="genric-btn info">ADD ADDRESS</button></a>
+                </form>
+             </div>
+          </div>
+       </div> 
+     </div>
+  </div>
+</div>
+
+<!-- col's til here -->
+
+        <div class="cupon_area">
+            <div class="check_title">
+                <h2>Have a coupon? <a href="#"></a></h2>
+            </div>
+            <!-- <input type="text" placeholder="Enter coupon code"> -->
+            <br>
+            <a class="applycoupon genric-btn primary" href="#">Apply Coupon</a>
+        </div>
+
+
+<!-- new code of billing ends here -->
+
+        <!-- <div class="billing_details">
+            <div class="row"> -->
+
+                <!-- <div class="col-lg-8">-->
+
+                <!-- <section class="order_details section_gap">
+                    <div class="container"> -->
+                        
+                        <div class="order_details_table">
+                            <h2>Order Details</h2>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr > 
+                                            <th scope="col"><strong>Product</strong></th>
+                                            <th scope="col"><strong>Quantity</strong></th>
+                                            <th scope="col"><strong>Offer (%)</strong></th>
+                                            <th scope="col"><strong>Total(₹)</strong></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                      
+                                        <tr>
+                                            <% let totalPriceSum = 0 %>
+                                            <% let priceaftercoupon= 0 %> 
+                                            <% let priceafteroffer= 0 %>
+                                            
+                                            <% cart.products.forEach(function(item) { %>
+                                            <% let totalPrice = item.product.price * item.quantity; %>
+
+                                            <% if(item.product.offer) { %>
+                                                <% priceafteroffer = totalPrice - (item.product.offer.discountPercentage / 100) * totalPrice %>
+                                                <% totalPrice = priceafteroffer %>
+                                            <% } %>
+
+
+                                            <% totalPriceSum += totalPrice; %> 
+                                                        
+                                            <td>
+                                                <p><%= item.product.productname %></p>
+                                            </td>
+                                            <td>
+                                                <p>Rs. <%=item.product.price.toFixed(2) %> x <%=item.quantity %></p>
+                                            </td>
+
+                                            <!-- including offer, if there -->
+                                            <td class="align-middle total-price">
+                                                <% if(item.product.offer) { %>
+                                                <%= item.product.offer.discountPercentage  %>   
+                                                <% } %>
+                                            </td> 
+
+
+                                            <td>
+                                                <p> <%= totalPrice.toFixed(2) %></p>
+                                            </td>
+                                        </tr>
+                                        <% }); %>  
+                                       
+                                        <tr>
+                                            <td>
+                                                <h4>Subtotal</h4>
+                                            </td>
+                                            <td>
+                                                <h5></h5>
+                                            </td>
+                                            <td>
+                                                <h5></h5>
+                                            </td>
+                                            <td>
+                                                <p><%= totalPriceSum.toFixed(2) %></p>
+                                            </td>
+                                        </tr>
+                                      
+                                        <tr>
+                                            <td>
+                                                <span id="coupon" data-coupon="<%= coupon.couponId %>"></span>
+                                                <h4>Coupon Discount</h4>
+                                            </td>
+                                            <td>
+                                                <p><%= coupon.code %></p>
+                                            </td>
+                                            <td>
+                                                <% if (coupon && coupon.discountAmount !== undefined) { %>
+                                                    <p><%= coupon.discountAmount%></p>
+                                                    <% priceaftercoupon= totalPriceSum - coupon.discountAmount %>
+                                                    <% } else { %>
+                                                        <% coupon.discountAmount=0 %>
+                                                    <p><%= coupon.discountAmount %></p>
+                                                    <% priceaftercoupon= totalPriceSum %>
+                                                    <% } %>
+                                               
+                                            </td>
+                                            <td>
+                                                <h5></h5>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <h4>Total (₹)</h4>
+                                            </td>
+                                            <td>
+                                                <h5></h5>
+                                            </td>
+                                            <td>
+                                                <h5></h5>
+                                            </td>
+
+                                            <td>
+                                                <p class="total-price-sum"><%= priceaftercoupon.toFixed(2) %></p>
+                                            </td>
+                                        </tr>
+                                       
+                                    </tbody>
+                                   
+                                </table>
+
+                                <!--  code of confirmation page of order details  ends here -->
+                                <!-- payment code frm checkout page -->
+
+                                <br>                                     
+        
+                                <div class="payment_item active">
+                                    <div class="radion_btn">
+                                        <input type="radio" id="f-option6" name="paymentoptions" value="onlinepayment" checked>
+                                        <label for="f-option6">Online Payment </label>
+                                        <img src="img/product/card.jpg" alt="">
+                                        <div class="check"></div>
+                                    </div>
+                                    <p>Pay online; you can pay with your net banking.</p>
+                                </div>
+
+                                <div class="payment_item">
+                                    <div class="radion_btn">
+                                        <input type="radio" id="f-option5" name="paymentoptions" value="cashondelivery" >
+                                        <label for="f-option5">Cash On Delivery</label>
+                                        <div class="check"></div>
+                                    </div>
+                                    <p>Please pay the required amount while receiving your order. Thanks in advance!</p>
+                                </div>
+                              
+                                <br>
+                                <!-- <a class="primary-btn btnorder" href="">Confirm Order</a> -->
+                                <button class="primary-btn">Place Order</button>
+                                <!-- payment code frm checkout page ends here -->
+                            </div>
+                        </div>
+                    <!-- </div>
+                </section> -->
+                <!-- new code ends here -->
+            <!-- </div>
+        </div> -->
+        <!-- top container -->
+    </div>  
+</section>
+<!--================End Checkout Area =================-->
+
+<%- include('../partials/userFooter.ejs') %>
+
+<script>
+
+    const totalpricesum = document.querySelector('.total-price-sum');
+    const priceaftercoupon = document.querySelector('.price-after-coupon');
+    const order = document.querySelector('.primary-btn');
+
+    // document.addEventListener('DOMContentLoaded', function() {
+     order.addEventListener('click', function() {
+        
+       console.log("clicked on on 'Place Order' in checkout page")
+       const checkRadio = document.querySelector('input[name="defaultaddress"]:checked')
+
+        if(!checkRadio){
+            Toastify({
+           text: "Please select an address",
+           duration: 3000,
+           gravity: "bottom", 
+           position: "center",
+           style: {
+         background: "#FF5350",
+            }, 
+           }).showToast();
+        }
+
+    address = checkRadio.getAttribute('data-address')
+
+       console.log("Address= ", address)
+       const coupon = document.querySelector('#coupon')
+       const paymentType = document.querySelector('input[name="paymentoptions"]:checked').value
+        console.log("Payment type", paymentType)
+        console.log("Address= ", address)
+       const orderData = {
+         address,
+         paymentType
+         
+       };
+      
+       if(coupon){
+            orderData.coupon=coupon.getAttribute('data-coupon')
+        }
+
+       console.log("Orderdata= ",orderData)
+
+       fetch("/checkoutpost", {
+       method: "POST",     
+       headers: {"Content-Type": "application/json"},
+       body: JSON.stringify(orderData),
+ })
+ .then(response => response.json())
+           .then(data => {
+               if (data.success) {
+                   window.location = data.url
+               } else {
+                   Toastify({
+           text: data.message,
+           duration: 3000,
+           gravity: "bottom", 
+           position: "center",
+           style: {
+         background: "#FFC300",
+ }, 
+           }).showToast();
+               }
+           })
+           .catch(error => {
+               showToast("Something went wrong")
+           })
+
+   });
+//});
+
+
+const applycoupon=document.querySelector('.applycoupon')
+  applycoupon.addEventListener('click',e =>{
+    e.preventDefault();
+    window.location.href=`/usecoupon?total=${totalpricesum.textContent}`
+  })
+
+
+ </script>

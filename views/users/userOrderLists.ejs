@@ -1,0 +1,90 @@
+<%- include('../partials/userHeader.ejs') %>
+
+
+  <!-- Start Banner Area -->
+  <section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Your Orders</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="/home">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="/orderdetails">Your Orders Lists</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+
+<!-- <section class="checkout_area section_gap"> -->
+<div class="container">
+<div class="row">
+    <!-- <div class="col-75"> -->
+      <div class="container">
+        <!-- <div class="row1"> -->
+          <!-- <div class="col-50"> -->
+            <h3>Orderlist</h3>
+            <% order.forEach(function(item) { %>
+              <div class="border border-2 p-3 mb-3">
+                <a href="/orderdetails/<%= item._id %>"><h4 class="d-flex"><strong>OrderId:<%= item._id %></strong></h4></a>
+                
+                <span>
+                  <i class="material-icons md-calendar_today"></i> <b><%= new Date(item.createdAt).toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true })%>
+                  </b>
+                </span> <br>
+                 
+                <p>Total Amount:<%= item.totalAmount %></p>
+                <p>Final Price:<%= item.finalPrice %></p>
+                <p>Discount Amount:<%= item.discountAmount %></p>
+                <span class="badge custom-danger-badge alert-success text-success text-capitalize"> <%= item.orderStatus %></span>
+                <table class="table mt-20">
+                <tbody>
+                  <% item.items.forEach(function(product) { %>
+                    <tr>
+                      <td><img src="/uploadProductImage/<%= product.productId.image[0] %>" class="img-sm img-thumbnail" alt="Item" width="50px"></td>
+                      <td><%= product.productId.productname %></td>
+                      <td><%= product.quantity %></td>
+                      <td><%= product.price %></td>
+                    </tr>
+                  <% }); %>
+                </tbody>
+                </table>
+              </div>
+            <% }); %>
+          <!-- </div> -->
+        <!-- </div> -->
+      </div>
+    <!-- </div> -->
+  </div>
+
+<!-- </section> -->
+<div class="filter-bar d-flex flex-wrap align-items-center">
+  <div class="sorting mr-auto">
+
+  </div>
+  <div class="pagination-area mt-30 mb-50">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-start">
+        <% for(let i=1; i<=totalPages;i++) { %>
+          <% if(i===currentPage){ %>
+            <li class="page-item active"><a class="page-link" href="#">
+                <%= i %>
+              </a></li>
+            <% } else { %>
+              <li class="page-item"><a class="page-link" href="/orders?page=<%= i %>">
+                  <%= i %>
+                </a></li>
+              <% } %>
+                <% } %>
+
+                  <!-- <li class="page-item"><a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a></li> -->
+      </ul>
+    </nav>
+  </div>
+</div>
+
+
+</div>
+
+<%- include('../partials/userFooter.ejs') %>

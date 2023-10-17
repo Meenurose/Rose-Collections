@@ -1,0 +1,184 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Admin || Rose Collections</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/imgs/theme/favicon.svg">
+    <!-- Template CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="screen-overlay"></div>
+    <aside class="navbar-aside" id="offcanvas_aside">
+        <div class="aside-top">
+            <a href="index.html" class="brand-wrap">
+                <img src="/assets/imgs/theme/logo.png" class="logo" alt="Rose Collections">
+            </a>
+            <div>
+                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i> </button>
+            </div>
+        </div>
+        <nav>
+            <ul class="menu-aside">
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/adminhome"> <i class="icon material-icons md-home"></i>
+                        <span class="text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="page-products-list.html"> <i class="icon material-icons md-shopping_bag"></i>
+                        <span class="text">Products</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/adminproducts">Product List</a>
+                        <a href="/admin/admincategory">Categories</a>
+                    </div>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="page-orders-1.html"> <i class="icon material-icons md-shopping_cart"></i>
+                        <span class="text">Orders</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/adminorderlists">Order list</a>
+                    </div>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="page-sellers-cards.html"> <i class="icon material-icons md-store"></i>
+                        <span class="text">Coupons</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/coupons">Coupon Lists</a>
+                    </div>
+                </li>
+             
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="#"> <i class="icon material-icons md-person"></i>
+                        <span class="text">Account</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/userslist">Users List</a>
+                    </div>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" disabled href="#"> <i class="icon material-icons md-pie_chart"></i>
+                        <span class="text">Sales</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/salesreport">Sales Report</a>
+                    </div>
+                </li>
+
+                <li class="menu-item has-submenu active" >
+                    <a class="menu-link" disabled href="#"> <i class="icon material-icons md-stars"></i>
+                        <span class="text">Banners</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/bannerlist">Banner Lists</a>
+                    </div>
+                </li>
+
+            </ul>
+            <hr>
+        </nav>
+    </aside>
+
+
+<section class="vh-100 gradient-custom">
+    <div class="container py-5 h-100">
+      <div class="row justify-content-center align-items-center h-100">
+        <div class="col-12 col-lg-9 col-xl-7">
+          <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
+            <div class="card-body p-4 p-md-5">
+              <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Edit Banner</h3>
+              <form action="/admin/editbanner" method="POST" enctype="multipart/form-data"
+                onsubmit="return validateForm(event);">
+              <input name="_id" value="<%= banner._id %>" hidden>
+
+                <div class="row">
+                  <div class="col-md-6 mb-4">
+                    <div class="form-outline">
+                      <label class="form-label" for="bannername">Banner Name</label>
+                      <input type="text" id="bannername" class="form-control form-control-lg" name="bannername" value="<%= banner.bannername %>" />
+                      <span id="bannernameError" class="text-danger"></span>
+                      
+                    </div>
+                  </div>
+
+                  <div class="col-md-6 mb-4 ">
+                     <div class="form-outline">
+                        <label class="form-label" for="addimage">Add images</label>
+                        <input type="file" name="images" multiple />
+                        <span id="imagesError" class="text-danger"></span>
+                            <div>
+                              <img src="/uploadProductImage/<%= banner.images %>" height="50px" />
+                            </div>  
+                      </div>    
+                  </div>
+                   <!-- <div class="col-md-6 mb-4">
+                      <div class="form-outline">
+                      <label class="form-label" for="bannerurl">Banner Url</label>
+                      <input type="text" id="bannerurl" class="form-control form-control-lg" name="bannerurl"  value="<%= banner.bannerurl %>" /> </div>
+                      </div> -->
+              </div>
+  
+               
+                  <div class="mt-4 pt-2">
+                    <button class="btn btn-primary btn-lg" type="submit">UPDATE BANNER</button>
+                  </div>
+    
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  
+    <%- include('../partials/adminFooter.ejs') %>
+
+
+<script>
+
+function validateForm(event) {
+
+const bannername = document.getElementById('bannername').value;
+const images = document.querySelector('input[type="file"]').files;
+
+document.getElementById('bannernameError').textContent = '';
+document.getElementById('imagesError').textContent = '';
+
+let isValid = true;
+
+if (bannername.trim() === '') {
+  document.getElementById('bannernameError').textContent = 'Enter Banner Name';
+  isValid = false;
+}
+
+if (images.length === 0) {
+  document.getElementById('imagesError').textContent = 'Please select a banner image';
+  isValid = false;
+}else{
+  const image = images[0]
+  const isImage =image.type.startsWith('image/');
+  if (!isImage) {
+    document.getElementById('imagesError').textContent = 'Please select image file...';
+    isValid = false;
+  }
+}
+  if(!isValid){
+    event.preventDefault();
+  }
+ return isValid;
+}
+
+
+</script>

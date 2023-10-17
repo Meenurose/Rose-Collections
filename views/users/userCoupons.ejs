@@ -1,0 +1,113 @@
+<%- include('../partials/userHeader.ejs') %>
+
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Coupons</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="/home">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="/checkout">Coupons</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+
+
+
+<div class="container mt-5 px-5">
+  <% if(!coupons || coupons.length === 0) { %>
+    <div class="container-fluid mt-100">
+      <div class="row px-xl-5">
+        <div class="col-md-12">
+          <div class="card">
+              <div class="card-body cart">
+                <div class="col-sm-12 empty-cart-cls text-center">
+                  
+                  <h3><strong>You have no coupons!</strong></h3>
+                  
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% } else { %>
+    <% coupons.forEach(function(item) { %>
+        <div data-id="<%= item.id %>" class="coupon">
+            
+                <div class="container2">
+                    <h3>Rose Collections</h3>
+                </div>
+                        <!-- <img src="hamburger.jpg" alt="Avatar" style="width:100%;"> -->
+                        <div class="container2" style="background-color:lightblue">
+                            <h2 class="couponcode"><b><%= item.code %></b></h2>
+                            <p><%= item.description %></p>
+                        </div>
+                        <div class="container2">
+                            <p class="discountAmount">Discount Amount: <span class="discountAmount1"><%= item.discountAmount %></span></p>
+                            <p class="expire">Coupon Expiry: <%= new Date(item.expirationDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) %></p>
+                        </div>
+                   
+        </div>
+    <% }); %>
+
+
+   
+          
+    <% } %>
+</div>
+<br> <br>
+  <%- include('../partials/userFooter.ejs') %>
+
+<script>
+
+    // Add a click event listener to each coupon container
+    const coupons = document.querySelectorAll('.coupon');
+    coupons.forEach(function(coupon) {
+      coupon.addEventListener('click', function() {
+        const couponData = {
+          couponId: coupon.getAttribute('data-id'),
+          code: coupon.querySelector('.couponcode').textContent,
+          discountAmount: coupon.querySelector('.discountAmount1').textContent,
+          expirationDate: coupon.querySelector('.expire').textContent
+        };
+        const { couponId,code, discountAmount } = couponData;
+
+      // Append couponId and discountAmount as query parameters to the URL
+      const queryParams = `?couponId=${couponId}&code=${code}&discountAmount=${discountAmount}`;
+
+      // Redirect to "/checkout" with the query parameters
+      window.location.href = "/checkout" + queryParams;
+        console.log(couponData);  
+      });
+    });
+  </script>
+  
+  <style>
+  .coupon {
+    border: 2px solid #bbb; /* Dotted border */
+    width: 50%;
+    border-radius: 15px; /* Rounded border */
+    margin: 0 auto; /* Center the coupon */
+    max-width: 600px;
+  }
+  
+  .container2 {
+    padding: 2px 16px;
+    background-color: #f1f1f1;
+  }
+  
+  /* .discountAmount {
+    background: #ccc;
+    padding: 3px;
+  } */
+  
+  .expire {
+    color: red;
+  }
+
+</style>

@@ -1,0 +1,231 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Admin || Rose Collections</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/imgs/theme/favicon.svg">
+    <!-- Template CSS -->
+    <link href="/assets/css/main.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="screen-overlay"></div>
+    <aside class="navbar-aside" id="offcanvas_aside">
+        <div class="aside-top">
+            <a href="index.html" class="brand-wrap">
+                <img src="/assets/imgs/theme/logo.png" class="logo" alt="Rose Collections">
+            </a>
+            <div>
+                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i> </button>
+            </div>
+        </div>
+        <nav>
+            <ul class="menu-aside">
+                <li class="menu-item ">
+                    <a class="menu-link" href="/admin/adminhome"> <i class="icon material-icons md-home"></i>
+                        <span class="text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="page-products-list.html"> <i class="icon material-icons md-shopping_bag"></i>
+                        <span class="text">Products</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/adminproducts">Product List</a>
+                        <a href="/admin/admincategory">Categories</a>
+                    </div>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="page-orders-1.html"> <i class="icon material-icons md-shopping_cart"></i>
+                        <span class="text">Orders</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/adminorderlists">Order list</a>
+                    </div>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="page-sellers-cards.html"> <i class="icon material-icons md-store"></i>
+                        <span class="text">Coupons</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/coupons">Coupon Lists</a>
+                    </div>
+                </li>
+             
+                <li class="menu-item has-submenu active">
+                    <a class="menu-link" href="#"> <i class="icon material-icons md-person"></i>
+                        <span class="text">Account</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/userslist">Users List</a>
+                    </div>
+                </li>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" disabled href="#"> <i class="icon material-icons md-pie_chart"></i>
+                        <span class="text">Sales</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/salesreport">Sales Report</a>
+                    </div>
+                </li>
+
+                <li class="menu-item has-submenu" >
+                    <a class="menu-link" disabled href="#"> <i class="icon material-icons md-stars"></i>
+                        <span class="text">Banners</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="/admin/bannerlist">Banner Lists</a>
+                    </div>
+                </li>
+
+            </ul>
+            <hr>
+        </nav>
+    </aside>
+
+
+     <main class="main-wrap">
+        <header class="main-header navbar">
+            <div class="col-search"> </div>
+            <div class="col-nav">
+                <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i class="material-icons md-apps"></i> </button>
+                <ul class="nav">
+                   
+                    <li class="nav-item">
+                        <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i> </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
+                    </li>
+                    <li class="dropdown nav-item">
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="/assets/imgs/people/avatar2.jpeg" alt="User"></a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
+                            <a class="dropdown-item text-danger" href="/admin/logout"><i class="material-icons md-exit_to_app"></i>Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </header>
+
+
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">Users List</h2>
+            <!-- <p>Lorem ipsum dolor sit amet.</p> -->
+        </div>        
+    </div>
+    <div class="card mb-4">
+        <!-- <header class="card-header">
+            <div class="row gx-3">
+                <div class="col-lg-4 col-md-6 me-auto">
+                    <input type="text" placeholder="Search..." class="form-control">
+                </div>                
+            </div>
+        </header>  -->
+        <!-- card-header end -->
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <!-- <th>#ID</th> -->
+                            <th scope="col">Name</th>
+                            <!-- <th scope="col">Lastname</th> -->
+                            <th scope="col">Phonenumber</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Block/Unblock User</th>
+                            <!-- <th scope="col" class="text-end"> Action </th> -->
+                        </tr>
+                        
+                    </thead>
+                    <tbody>
+                        <tbody>
+                            <% data.forEach(function(item) { %>
+                              <tr>
+                                <td><%= item.name %></td>
+                                <td><%= item.phonenumber %></td>
+                                <td><%= item.email %></td>
+                        
+                                <td>
+                                    
+                                    <% if (item.isActive) { %>
+                                        <button class="btn btn-md rounded font-sm" data-id="<%= item._id%>" style="min-width:100px; padding: 5px 10px; font-size: 12px;">Block User</button>
+                                      <% } else { %>
+                                        <button class="btn btn-md rounded font-sm" data-id="<%= item._id%>" style="min-width:100px; padding: 5px 10px; font-size: 12px;">Unblock User</button>
+                                      <% } %>
+                                      
+                                    
+                                  </td>
+                                  
+                              </tr>
+                            <% }); %>
+                        </tbody>
+                        <!-- <tr>
+                            <td>0901</td>
+                            <td><b>Marvin McKinney</b></td>
+                            <td><template class="__cf_email__" data-cfemail="aec3cfdcd8c7c0eecbd6cfc3dec2cb80cdc1c3">[email&#160;protected]</template></td>
+                            <td>$9.00</td>
+                            <td><span class="badge rounded-pill alert-warning">Pending</span></td>
+                            <td>03.12.2020</td>
+                            <td class="text-end">
+                                <a href="#" class="btn btn-md rounded font-sm">Detail</a>
+                                <div class="dropdown">
+                                    <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">View detail</a>
+                                        <a class="dropdown-item" href="#">Edit info</a>
+                                        <a class="dropdown-item text-danger" href="#">Delete</a>
+                                    </div>
+                                </div> -->
+                                <!-- dropdown //end -->
+                            <!-- </td> -->
+                        <!-- </tr> -->
+                        
+                    </tbody>
+                </table>
+            </div> 
+            <!-- table-responsive //end -->
+        </div>
+         <!-- card-body end// -->
+    </div>
+</section> 
+
+
+
+<%- include('../partials/adminFooter.ejs') %>
+
+
+<script>
+    const button = document.querySelectorAll(".btn")
+    button.forEach(item=>{
+        item.addEventListener("click",()=>{
+            const id=item.getAttribute("data-id")
+            fetch("/admin/blockunblock", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id : id }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status) 
+            {
+                if(item.innerHTML=="Block User") item.innerHTML="Unblock User"
+                else item.innerHTML="Block User"
+            }       
+      })
+      .catch((error) => console.error(error));
+  }); 
+        })
+
+</script>
