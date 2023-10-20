@@ -1078,6 +1078,8 @@ const userSortPrice = async (req, res) => {
     //res.render("users/userSortPrice" );
   } catch (error) {
     console.log(error.message);
+    return res.render("users/error404");
+  
   }
 };
 
@@ -1104,6 +1106,8 @@ const userWishlist = async (req, res) => {
     res.render("users/userWishlist", { wishlist });
   } catch (error) {
     console.log(error.message);
+    return res.render("users/error404");
+  
   }
 };
 
