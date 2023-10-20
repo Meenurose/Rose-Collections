@@ -562,7 +562,7 @@ const userCategoryProds = async (req, res) => {
 
     const category = await categoryModel.findOne({ _id: catId });
     const categoryname = category.categoryname;
-    console.log("Category name== ......", categoryname);
+    console.log("Category name== ", categoryname);
 
     ////////////
     const products = await productModel.find({ categoryname: catId });
@@ -577,6 +577,8 @@ const userCategoryProds = async (req, res) => {
       .populate("categoryname")
       .skip(skipItems)
       .limit(ITEMS_PER_PAGE);
+    
+    const count = await productModel.countDocuments({categoryname:catId})
 
     if (prods)
       res.render("users/userCategoryProds", {
@@ -585,11 +587,13 @@ const userCategoryProds = async (req, res) => {
         totalPages: totalPages,
         catId,
         categoryname,
+        count
       });
 
-    // res.render("users/userCategoryProds",{products});
   } catch (error) {
     console.log(error.message);
+    return res.render("users/error404");
+  
   }
 };
 
@@ -598,6 +602,8 @@ const userForgotPswd = async (req, res) => {
     res.render("users/userForgotPswd", { message: " " });
   } catch (error) {
     console.log(error.message);
+    return res.render("users/error404");
+  
   }
 };
 
@@ -613,6 +619,8 @@ const userHome = async (req, res) => {
     }
   } catch (error) {
     console.log(error.message);
+    return res.render("users/error404");
+  
   }
 };
 
@@ -627,6 +635,8 @@ const userProfile = async (req, res) => {
     res.render("users/userProfile", { user, category });
   } catch (error) {
     console.log(error.message);
+    return res.render("users/error404");
+  
   }
 };
 
@@ -854,6 +864,50 @@ const userSearch = async (req, res, next) => {
     res.status(500).send("Internal Server Error");
   }
 };
+
+//////////////////////////////////////////
+
+const userSearchCat = async (req, res, next) => {
+  try {
+    const query = req.query.query;
+    const regex = new RegExp(query, "i");
+    const catId = req.params.id
+    
+    const category = await categoryModel.findOne({ _id: catId });
+    const categoryname = category.categoryname;
+    console.log("Category name== ", categoryname);
+
+
+    const searchResults = await productModel.find({
+      $and: [
+        {categoryname : catId}, 
+      {     
+      $or: [
+        { productname: regex },
+        // Add other fields to search if needed
+      ],
+    },
+    ],
+    });
+
+    const ITEMS_PER_PAGE = 3;
+    const page = parseInt(req.query.page) || 1;
+    const skipItems = (page - 1) * ITEMS_PER_PAGE;
+    const totalCount = searchResults.length;
+    const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
+
+    res.render("users/userSearch", {
+      results: searchResults,
+      query: query,
+      currentPage: page,
+      totalPages: totalPages,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+};
+
 
 // const products = await productModel.find().populate('categoryname').skip(skipItems)
 // .limit(ITEMS_PER_PAGE)
@@ -1152,7 +1206,9 @@ module.exports = {
 
   userAddCoupon,
   userAddCouponpost,
+
   userSearch,
+  userSearchCat,
   userSortPrice,
 
   userWishlist,

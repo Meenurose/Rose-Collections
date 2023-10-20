@@ -60,15 +60,7 @@ const userSchema = new mongoose.Schema({
            
         }
     ],
-    wallet:{
-        type:Number,
-        default:0
-    },
-    walletTransaction:{
-        type: Array, 
-        
-    }
-    
+       
 });
 
 module.exports = mongoose.model('users',userSchema, 'users');

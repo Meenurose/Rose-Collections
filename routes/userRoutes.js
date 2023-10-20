@@ -72,6 +72,7 @@ userRoute.get('/wallettransaction',auth.checkSession,orderController.walletTrans
 
 userRoute.get('/search', userController.userSearch)
 
+userRoute.get('/searchCat/:id', userController.userSearchCat)
 
 
 module.exports = userRoute
