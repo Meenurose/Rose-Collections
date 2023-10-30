@@ -105,8 +105,7 @@ function validateEmail(email) {
 }
 ///////////////////////////////////////// ///////////////////////////////////////// /////////////////////////////////////////
 
-const 
-userSendOtp = async (req, res) => {
+const userSendOtp = async (req, res) => {
   try {
     console.log("In SendOtp function");
     // const phone = "+91" + req.body.phonenumber;
@@ -131,7 +130,7 @@ userSendOtp = async (req, res) => {
       const transporter = nodemailer.createTransport({
         service: "Gmail", // Use your email service provider
         auth: {
-          user: "meenu.roses20@gmail.com", //  email address
+          user: "meenu.roses20@gmail.com", 
           pass: "uymzrgczhfagvmaw", //  email - app password
         },
       });
@@ -141,10 +140,10 @@ userSendOtp = async (req, res) => {
 
       //Email content
       const mailOptions = {
-        from: "meenu.roses20@gmail.com", // Sender's email address
-        to: email, // Recipient's email address
+        from: "meenu.roses20@gmail.com",
+        to: email, 
         subject: "OTP Verification",
-        text: `Your OTP is: ${otp}`, // Message body with OTP
+        text: `Your OTP is: ${otp}`, 
       };
 
       // Send the email
@@ -274,6 +273,55 @@ const userSignedup = async (req, res) => {
     console.log(error.message);
   }
 };
+
+////////////////////////////////////////
+// resend otp
+const userResendOtp = async (req, res) => {
+  try {
+      const userId = req.session.guest_id;
+      if (!userId)
+          return res
+              .status(404)
+              .json({ success: false, message: "User not found" });
+
+      const user = await userModel.findById(userId);
+      if (!user) {
+          return res
+              .status(404)
+              .json({ success: false, message: "User not found" });
+      }
+
+      const email = user.email;
+      const name = user.name;
+      console.log('user email in userResendOtp ', email)
+      const currentOtp = generateOtp();
+
+      req.session.otp = await sendVerifyMail(name, email, currentOtp);
+      req.session.time = Date.now();
+
+      res.status(200).json({
+          success: true,
+          message: "Verification email resent",
+      });
+  } catch (error) {
+      console.error(error.message);
+      res.status(500).json({
+          success: false,
+          message: "Error resending verification email",
+      });
+  }
+};
+
+
+
+const generateOtp = () => {
+  const otp = Math.floor(1000 + Math.random() * 9000).toString();
+  return otp;
+};
+
+
+
+/////////////////////////////////////////
 
 const userSigninPage = async (req, res) => {
   console.log("In userSigninPage..");
@@ -538,64 +586,7 @@ const userProductLists = async (req, res) => {
   // }
 };
 
-const userCategoryProds = async (req, res) => {
-  try {
-    const catId = req.params.id;
 
-    //to get catname:
-
-    // categoryModel.findOne({ _id: catId })
-    //   .then((category) => {
-    //     if (!category) {
-    //       // Handle the case where the category with the specified _id is not found
-    //       console.log("Category not found");
-    //       return;
-    //     }
-
-    //     // Access the categoryname
-    //     const categoryName = category.categoryname;
-    //     console.log("Category Name:", categoryName);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error retrieving category:", error);
-    //   });
-
-    const category = await categoryModel.findOne({ _id: catId });
-    const categoryname = category.categoryname;
-    console.log("Category name== ", categoryname);
-
-    ////////////
-    const products = await productModel.find({ categoryname: catId });
-
-    const ITEMS_PER_PAGE = 3;
-    const page = parseInt(req.query.page) || 1;
-    const skipItems = (page - 1) * ITEMS_PER_PAGE;
-    const totalCount = 9;
-    const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
-    const prods = await productModel
-      .find()
-      .populate("categoryname")
-      .skip(skipItems)
-      .limit(ITEMS_PER_PAGE);
-    
-    const count = await productModel.countDocuments({categoryname:catId})
-
-    if (prods)
-      res.render("users/userCategoryProds", {
-        products,
-        currentPage: page,
-        totalPages: totalPages,
-        catId,
-        categoryname,
-        count
-      });
-
-  } catch (error) {
-    console.log(error.message);
-    return res.render("users/error404");
-  
-  }
-};
 
 const userForgotPswd = async (req, res) => {
   try {
@@ -987,6 +978,47 @@ const userSearchCat = async (req, res, next) => {
 //     }
 // }
 
+
+const userCategoryProds = async (req, res) => {
+  try {
+    const catId = req.params.id;
+    const category = await categoryModel.findOne({ _id: catId });
+    const categoryname = category.categoryname;
+    console.log("Category name, in userCategoryProds ctrllr = ", categoryname);
+
+    ////////////
+    const products = await productModel.find({ categoryname: catId });
+
+    const ITEMS_PER_PAGE = 3;
+    const page = parseInt(req.query.page) || 1;
+    const skipItems = (page - 1) * ITEMS_PER_PAGE;
+    const totalCount = 9;
+    const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
+    const prods = await productModel
+      .find()
+      .populate("categoryname")
+      .skip(skipItems)
+      .limit(ITEMS_PER_PAGE);
+    
+    const count = await productModel.countDocuments({categoryname:catId})
+
+    if (prods)
+      res.render("users/userCategoryProds", {
+        products,
+        currentPage: page,
+        totalPages: totalPages,
+        catId,
+        categoryname,
+        count
+      });
+
+  } catch (error) {
+    console.log(error.message);
+    return res.render("users/error404");
+  
+  }
+};
+
 //////////////////////////////////////////////User Sortinggg/////////////////////////////////////////
 
 const userSortPrice = async (req, res) => {
@@ -1082,6 +1114,75 @@ const userSortPrice = async (req, res) => {
   
   }
 };
+
+//////////////////////////////userSortPrice in each Category///////////////////////
+
+const userSortPriceCat = async (req, res) => {
+  try {
+    
+    const sortOption = req.query.sortOption;
+    //const catId = parseInt(req.query.catId) ;
+    //const catId = req.query.catId;
+    const catId = req.params.catId;
+    console.log("catid and its type= ", catId, typeof catId)
+
+
+    // const category = await categoryModel.findOne({ _id: catId });
+    // const categoryname = category.categoryname;
+    // console.log("Category name,in userSortPriceCat cntrller=  , typeof catId", categoryname, typeof catId);
+
+    const results = await productModel.find(
+      {
+        categoryname : catId
+      }
+    )
+
+    const count = await productModel.countDocuments({categoryname:catId})
+   
+    //sorting
+   // const { sortOption } = req.query;
+    let sortCriteria = {};
+    if (sortOption === "2") {
+      sortCriteria = { price: 1 }; // Sort by Price: Low to High
+    } else if (sortOption === "3") {
+      sortCriteria = { price: -1 }; // Sort by Price: High to Low
+    }
+    // sorting ends
+
+    const ITEMS_PER_PAGE = 3;
+    const page = parseInt(req.query.page) || 1;
+    const skipItems = (page - 1) * ITEMS_PER_PAGE;
+    const totalCount = results.length;
+
+    const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
+
+    const sortedProducts = await productModel
+      .find()
+      .populate("categoryname")
+      .sort(sortCriteria)
+      .skip(skipItems)
+      .limit(ITEMS_PER_PAGE);
+   
+    //console.log(products);
+    if (sortedProducts)
+      res.render("users/userSortPriceCatProd", {
+        products: sortedProducts,
+        currentPage: page,
+        totalPages: totalPages,
+        category: categoriesWithCounts,
+        categoryname,
+        sortOption,
+        catId,
+        count
+      });
+
+  } catch (error) {
+    console.log(error.message);
+    return res.render("users/error404");
+  
+  }
+};
+
 
 //////////////////////////////////////////////User Wishlist/////////////////////////////////////////
 
@@ -1193,10 +1294,10 @@ module.exports = {
   userSendOtp,
   userResetPassword,
   userSignedup,
+  userResendOtp,
   userSigninPage,
   userProductDetails,
   userProductLists,
-  userCategoryProds,
 
   userForgotPswd,
   userHome,
@@ -1212,8 +1313,10 @@ module.exports = {
   userAddCouponpost,
 
   userSearch,
-  userSearchCat,
+  userSearchCat,  
+  userCategoryProds,
   userSortPrice,
+  userSortPriceCat,
 
   userWishlist,
   addtowishlistpost,

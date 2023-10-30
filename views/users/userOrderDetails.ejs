@@ -51,10 +51,11 @@
 
                                         <% if(order.orderStatus==='pending' ||order.orderStatus==='placed' ){%>
                                            
-                                            <button class="genric-btn danger"  onclick="cancelOrder('<%= order._id %>')" >Cancel Order</button></a>
+                                            <button class="genric-btn danger" onclick="cancelOrder('<%= order._id %>')" >Cancel Order</button></a>
                                         <%} else if(order.orderStatus==='Delivered' ) { %>
                                             <button class="genric-btn info" onclick="invoiceGenerate('<%= order._id %>')" 
                                                 href="#">Download Invoice</button>
+                                            <button class="genric-btn warning radius" onclick="returnOrder('<%= order._id %>')" >Return Order</button></a>
                                         <% } %>
                                                     <!-- order stat- delivered, here -->
                                                     <!-- <a class="btn btn-secondary print ms-2" href="#"><i class="icon material-icons md-print"></i></a> -->
@@ -209,8 +210,41 @@
 
 <script>
 
-function cancelOrder(orderId) {
-    Swal.fire({
+//  function cancelOrder(orderId) {
+//     Swal.fire({
+//         title: 'Are you sure you want to Cancel the order?',
+//         text: "You won't be able to revert this!",
+//         icon: 'warning',
+//         showCancelButton: true,
+//         confirmButtonColor: '#d33',
+//         cancelButtonColor: '#3085d6',
+//         confirmButtonText: 'Yes, Cancel it!'
+//     }).then((result) => {
+//         if (result.isConfirmed) {
+//             console.log("Just before cancel toastt")
+//           Toastify({
+//           text: 'The order is Cancelled',
+//           duration: 3000,
+//           gravity: "bottom", 
+//           position: "center",
+//           style: {
+//           background: "#FF5350",
+//           }, 
+          
+//           //animation: { show: { effect: "FadeIn" }, hide: { effect: "FadeOut" } } 
+//           }).showToast() 
+                 
+//                 console.log("Before navigation");
+//                 window.location.href = `/editorderdetails/${orderId}?action=cancel`;
+//                 console.log("After navigation");
+        
+//         }
+//     });
+// }
+
+
+async function cancelOrder(orderId) {
+    const result = await Swal.fire({
         title: 'Are you sure you want to Cancel the order?',
         text: "You won't be able to revert this!",
         icon: 'warning',
@@ -218,10 +252,47 @@ function cancelOrder(orderId) {
         confirmButtonColor: '#d33',
         cancelButtonColor: '#3085d6',
         confirmButtonText: 'Yes, Cancel it!'
+    });
+
+    if (result.isConfirmed) {
+        console.log("Just before cancel toast");
+
+        // Use a Promise to introduce a delay before showing the toast message
+        const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+        await delay(1000); // Adjust the delay time (in milliseconds) as needed
+
+        Toastify({
+            text: 'The order is Cancelled',
+            duration: 3000,
+            gravity: "bottom",
+            position: "center",
+            style: {
+                background: "#FF5350",
+            },
+        }).showToast();
+
+        console.log("Before navigation");
+        window.location.href = `/editorderdetails/${orderId}?action=cancel`;
+        console.log("After navigation");
+    }
+}
+
+
+
+function returnOrder(orderId) {
+    Swal.fire({
+        title: 'Are you sure you want to Return the order?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, Return it!'
     }).then((result) => {
         if (result.isConfirmed) {
             // If the user confirms the action, perform the deletion
-            window.location.href = `/editorderdetails/${orderId}?action=cancel`;
+            window.location.href = `/editorderdetails/${orderId}?action=return`;
         }
     });
 }

@@ -202,15 +202,27 @@
 			</div>
 			<div class="col-xl-9 col-lg-8 col-md-7">
 				<!-- Start Filter Bar -->
-				<div class="filter-bar d-flex flex-wrap align-items-center">
+				<!-- <div class="filter-bar d-flex flex-wrap align-items-center">
 					<div class="">
 						<select>
-							<option value="1">Category : <%= categoryname%></option>
-							<!-- <option value="1">Default sorting</option> -->
+							<option value="1">Sort :  categoryname</option>
+							
+						</select>
+					</div>					
+				</div> -->
+				<div class="filter-bar d-flex flex-wrap align-items-center">
+				<form id="sortForm">
+					<div class="sorting">
+						<select id="sortOption" name="sortOption">
+							<option value="1">Sort by Price</option>
+							<option value="2">Price: Low to High</option>
+							<option value="3">Price: High to Low</option>
 						</select>
 					</div>
-					`
-				</div>
+				</form>
+			</div>
+
+
 				<!-- End Filter Bar -->
 				<!-- Start Best Seller -->
 				<section class="lattest-product-area pb-40 category-list">
@@ -259,13 +271,6 @@
 									<% }); %>
 										<!-- single product -->
 
-										<!-- single product -->
-
-										<!-- single product -->
-
-										<!-- single product -->
-
-										<!-- single product -->
 
 					</div>
 				</section>
@@ -281,10 +286,7 @@
 					</div>
 
 					<!-- my pagination code below -->
-					
-
-
-
+				
 					<!-- my pagination code ends here -->
 				</div>
 				<!-- End Filter Bar -->
@@ -292,17 +294,27 @@
 		</div>
 	</div>
 
-	<!-- Start related-product Area -->
-
-	<!-- End related-product Area -->
-
-
-
-
-
-
-
-
-
 
 	<%- include('../partials/userFooter.ejs') %>
+
+	
+	<!-- <script>
+        $(document).ready(function () {
+            $('#sortOption').change(function () {
+                const selectedOption = $(this).val();
+				//const catId = parseInt('<%= catId %>') ; 
+				//console.log("Type of catId , in script fn in userSortPriceCatProd.ejs = ", typeof )
+    
+                // Redirect the user based on the selected option
+                if (selectedOption === '2') {
+                   // window.location.href = '/sortpricecatproducts?sortOption=2&catId=${catId}'; // Redirect to low to high
+				   window.location.href = `/sortpricecatproducts/<%=catId%>/?sortOption=2`;
+
+                } else if (selectedOption === '3') {
+                    //window.location.href = '/sortpricecatproducts?sortOption=3&catId=${catId}'; // Redirect to high to low
+				   window.location.href = `/sortpricecatproducts/<%=catId%>/?sortOption=3`;
+
+                }
+            });
+        });
+    </script> -->

@@ -10,6 +10,7 @@ const crypto = require("crypto");
 const { configDotenv } = require('dotenv')
 
 
+
 ////////////////////////////////////////user orders/////////////////////////////////
 
 
@@ -51,17 +52,16 @@ const { configDotenv } = require('dotenv')
       const orderId = req.params.id;
       const action = req.query.action
       console.log(orderId)
-
       //const order = await orderModel.find(userId : userI)
 
       if (action === 'cancel') {
         await orderModel.findByIdAndUpdate(orderId, {orderStatus: "Cancelled" });
-      }
+            }
       else if (action === 'return') {
         await orderModel.findByIdAndUpdate(orderId, { orderStatus: "Returned" });
       }
   
-      res.redirect("/home");
+      res.redirect("/orders");
     } catch (error) {
       console.log(error.message);
       return res.render("users/error404");

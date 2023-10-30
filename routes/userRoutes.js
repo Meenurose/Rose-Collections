@@ -20,7 +20,8 @@ userRoute.get('/signout', auth.checkSession, userController.userSignout)
 
 userRoute.get('/signup', userController.userSignup)
 userRoute.post('/sendotp', userController.userSendOtp)
-userRoute.post('/verifyotp', userController.userSignedup)   
+userRoute.post('/verifyotp', userController.userSignedup) 
+userRoute.post('/resendOtp', userController.userResendOtp)  
 //userRoute.post('/signup', userController.userSignedup)
 
 userRoute.get('/forgotpassword', userController.userForgotPswd)
@@ -34,6 +35,8 @@ userRoute.get('/products', userController.userProductLists)
 
 userRoute.get('/categoryproducts/:id', userController.userCategoryProds)
 userRoute.get('/sortedproducts', userController.userSortPrice)
+
+userRoute.get('/sortpricecatproducts/:id', userController.userSortPriceCat)
 
 
 userRoute.get('/wishlist', auth.checkSession, userController.userWishlist) 

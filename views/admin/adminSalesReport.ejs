@@ -140,21 +140,39 @@
                 </div> -->
                 <form action="/admin/salesreport" method="GET">
                     <div class="d-flex">
-                <span>From</span>
-                <div class="col-md-2 col-6">
-                    <input name="from" type="date" value="<%= from %>" class="form-control">
-                </div>
-                &nbsp;&nbsp; <span>To</span>  &nbsp;&nbsp;
-                <div class="col-md-2 col-6">
-                    <input name="to" type="date" value="<%= to %>" class="form-control">
-                </div>
-                <button type="submit" class="btn btn-primary">Generate Report</button>
-                </form>            
-        </div>
+                
+                        <div class="col-md-1 col-1 date-box">
+                            <label for="StartDate">Start Date:</label>
+                        </div>
+                
+                        <div class="col-md-3 ">
+                            <input name="from" id="StartDate" type="date" value="<%= from %>" class="form-control">
+                            <span id="startDateError" name="startDateError" style="color: red;"></span>
+                        </div>
+                
+                        &ensp; &ensp; &ensp; &emsp; &emsp;
+                
+                        <div class="col-md-1 col-1 date-box">
+                            <label for="EndDate">End Date:</label>
+                        </div>                        
+                        <div class="col-md-3 ">
+                            <input name="to" id="EndDate" type="date" value="<%= to %>" class="form-control">
+                            <span id="endDateError" name="endDateError" style="color: red;"></span>
+                        </div>
+                        
+
+                        &emsp; &emsp; &emsp;
+                        <button type="submit" value="Submit" class="btn btn-primary">Generate Report</button>
+                    </div>
+                </form>
+                
+                
+            </div>
         <br>
-            <div class="d-flex">
+            <div class="d-flex ">
                 <a href="/admin/reports/sales/download/excel?from=<%= from %>&to=<%= to %>"><span class="fw-semibold">Download Excel</span></a>
-                &nbsp;&nbsp; <a href="/admin/reports/sales/download/pdf?from=<%= from %>&to=<%= to %>"><span class="fw-semibold">Download PDF</span></a>
+                &ensp; &ensp; &ensp;
+                <a href="/admin/reports/sales/download/pdf?from=<%= from %>&to=<%= to %>"><span class="fw-semibold">Download PDF</span></a>
             </div>
             <div class="d-flex gap-3 mt-3 ms-2">
                 <% dateRanges.forEach(function(item) {%>
@@ -271,4 +289,45 @@
     </section>
 
 
-    <%- include('../partials/adminFooter.ejs') %>
+    <%- include('../partials/adminFooter.ejs') %>                                           
+    <style>
+        .date-box {
+    
+            display: flex;
+            align-items: center;
+            width: 70px;
+            height: 50px;
+        }
+    </style>
+
+    <script>
+        $(function () {
+            $("#EndDate").change(function () {
+                var startDate = document.getElementById("StartDate").value;
+                var endDate = document.getElementById("EndDate").value;
+                var endDateError = document.getElementById("endDateError")
+
+                if (Date.parse(endDate) <= Date.parse(startDate)) {
+                    console.log("end date shud be > start date")
+                    //alert("End date should be greater than Start date");
+                    endDateError.textContent = "End date should be greater than Start date";
+                    document.getElementById("EndDate").value = "";
+                }
+            });
+        });
+
+        $(function () {
+            $("#StartDate").change(function () {
+                var startDate = document.getElementById("StartDate").value;
+                var endDate = document.getElementById("EndDate").value;
+                var startDateError = document.getElementById("startDateError")
+
+                if (Date.parse(endDate) <= Date.parse(startDate)) {
+                    console.log("end date11 shud be > start date11")                    
+                    startDateError.textContent = "Start date should be less than End date";
+                    document.getElementById("StartDate").value = "";
+                }
+            });
+        });
+        
+    </script>

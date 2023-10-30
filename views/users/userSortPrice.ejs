@@ -64,7 +64,6 @@
 						</div>
 					</div>
 
-
 					<div class="common-filter">
 						<div class="head"></div>
 						<form action="#">
@@ -79,25 +78,16 @@
 			</div>
 			<div class="col-xl-9 col-lg-8 col-md-7">
 				<!-- Start Filter Bar -->
-				<div class="filter-bar d-flex flex-wrap align-items-center">
-                
-					<!-- <div class="sorting">
-						<select name="sortOption">
-							<option value="1">Sort by Price</option>
-							<option value="2"><a href='/sortedproducts' ></a> Price: Low to High</option>
-							<option value="3"><a href='/sortedproducts' ></a> Price: High to Low</option>
-						</select>                    
-					</div>                     -->
-    <form id="sortForm">
-        <div class="sorting">
-            <select id="sortOption" name="sortOption">
-                <option value="1">Sort by Price</option>
-                <option value="2">Price: Low to High</option>
-                <option value="3">Price: High to Low</option>
-            </select>
-        </div>
-    </form>
-				
+				<div class="filter-bar d-flex flex-wrap align-items-center">			
+					<form id="sortForm">
+						<div class="sorting">
+							<% if(sortOption=="2" ) { %>
+								<p style="color: white; margin-bottom: 0px">Price: Low to High</p>
+								<% } else if(sortOption=="3" ) { %>
+								<p style="color: white; margin-bottom: 0px">Price: High to Low</p>
+								<%} %>
+						</div>
+					</form>
 				</div>
 				<!-- End Filter Bar -->
 				<!-- Start Best Seller -->
@@ -120,30 +110,12 @@
 													<%= product.mrp %>
 												</h6>
 											</div>
-											<div class="prd-bottom">
-
-												<!-- <a href="" class="social-info">
-													<span class="ti-bag"></span>
-													<p class="hover-text">add to bag</p>
-												</a>
-												<a href="" class="social-info">
-													<span class="lnr lnr-heart"></span>
-													<p class="hover-text">Wishlist</p>
-												</a>
-												<a href="" class="social-info">
-													<span class="lnr lnr-sync"></span>
-													<p class="hover-text">compare</p>
-												</a>
-												<a href="/productdetails/product._id" class="social-info">
-													<span class="lnr lnr-move"></span>
-													<p class="hover-text">view more</p>
-												</a> -->
-											</div>
+											
 										</div>
 									</div>
 								</div>
-								<% } %>
-									<% }); %>
+							<% } %>
+						<% }); %>
 									
 
 					</div>
@@ -198,7 +170,7 @@
 
 	<%- include('../partials/userFooter.ejs') %>
 
-
+	
 
     <script>
         $(document).ready(function () {

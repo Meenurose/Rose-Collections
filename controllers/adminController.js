@@ -320,7 +320,12 @@ const totalPages=Math.ceil(totalCount/ITEMS_PER_PAGE)
         const file = `${__dirname}/../sales_report.xlsx`
         res.download(file)
       } else {
-        const browser = await puppeteer.launch()
+       // const browser = await puppeteer.launch()
+       //adding new  below , iknstead of above line ,on 28th oct 
+
+        const browser = await puppeteer.launch({executablePath: '/usr/bin/chromium-browser'})
+
+
         const page = await browser.newPage()
 
         // Set content and styles for the PDF
