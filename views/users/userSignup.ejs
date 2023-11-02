@@ -5,6 +5,8 @@
  <link rel="shortcut icon" href="img/fav.png">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
 <section class="vh-100" style="background-color: #eee;">
     <div class="container h-100">
       <!-- <div class="row d-flex justify-content-center align-items-center h-100"> -->
@@ -16,54 +18,57 @@
 
                   <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
 
-                  <form action="/verifyotp" method="POST" id="otpform" class="mx-1 mx-md-4" >
+                  <form action="" method="" id="registerForm" class="mx-1 mx-md-4" >
 
                     <div class="d-flex flex-row align-items-center mb-4">
                       <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                       <div class="form-outline flex-fill mb-0">
-                        <input type="text" id="form3Example1c" class="form-control"  name="name" />
                         <label class="form-label" for="form3Example1c">Your Name</label>
+                        <input type="text" id="form3Example1c" class="form-control"  name="name" />                       
+                        <span id="nameError" style="color: red;" ></span>
                       </div>
                     </div>
 
                     <div class="d-flex flex-row align-items-center mb-4">
                       <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
                       <div class="form-outline flex-fill mb-0">
-                        <input type="email" id="email" class="form-control" name="email"/>
                         <label class="form-label" for="email">Your Email</label>
+                        <input type="email" id="email" class="form-control" name="email"/>                       
+                        <span id="emailError" style="color: red;" ></span>
                       </div>
                     </div>
 
                     <div class="d-flex flex-row align-items-center mb-4">
                       <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
                       <div class="form-outline flex-fill mb-0">
-                        <input type="tel" id="phonenumber" class="form-control"
-                        oninput="validateNumber(event)" name="phonenumber" pattern="[0-9]{10}" maxlength="10" required/>
                         <label class="form-label" for="phonenumber">Your Phone Number</label>
+                        <input type="tel" id="phonenumber" class="form-control" name="tel">  
+                        <span id="telError" style="color: red;" ></span>
                       </div>
                     </div>
 
                     <div class="d-flex flex-row align-items-center mb-4">
                       <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
                       <div class="form-outline flex-fill mb-0">
-                        <input type="password" id="form3Example4c" class="form-control" name="password" />
-                        <label class="form-label" for="form3Example4c">Password</label>
+                         <label class="form-label" for="password">Password</label>
+                        <input type="password" id="password" class="form-control" name="password" />                       
+                        <span id="passwordError" style="color: red;" ></span>
                       </div>
                     </div>
 
-                     <!-- <div class="d-flex flex-row align-items-center mb-4">
+                     <div class="d-flex flex-row align-items-center mb-4">
                       <i class="fas fa-key fa-lg me-3 fa-fw"></i>
                       <div class="form-outline flex-fill mb-0">
-                        <input type="password" id="form3Example4cd" class="form-control" name="repassword" />
-                        <label class="form-label" for="form3Example4cd">Repeat your password</label>
+                        <label class="form-label" for="password">Repeat your password</label>
+                        <input type="password" id="repassword" class="form-control" name="repassword" />                        
+                        <span id="repasswordError" style="color: red;" ></span>
                       </div>
                     </div>
-                 -->
+                
 
                       <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4"  id="sendOtp" >
                         <button type="button" class="btn btn-primary">Send OTP</button>
                       </div>
-
                       <span id="otpmessage" name="otpmessage" style="color: red ;
                       text-align:center; height : 100vh;" ></span>
                       <br>
@@ -71,17 +76,18 @@
                       <div class="d-flex flex-row align-items-center mb-4">
                         <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
                         <div class="form-outline flex-fill mb-0">
-                          <input type="text" id="typeOtpX" class="form-control" name="otp" />
                           <label class="form-label" for="form3Example4c">Enter the OTP</label>
+                          <input type="text" id="typeOtpX" class="form-control" name="otp" />
+                          
                           <span id="otpError" style="color: red;" ></span>
                         </div>
                       </div>
 
                       <span class="float-end" id="otp-counter"></span>
-                      <span class="float-end" id="resend-btn" style="color: rgb(1, 1, 105);" style="cursor: pointer;"
-                        hidden>Resend OTP</span>
+                      <!-- <span class="float-end" id="resend-btn" style="color: rgb(1, 1, 105);" style="cursor: pointer;" -->
+                      <span id="resend-btn" style="color: rgb(1, 1, 105); cursor: pointer;" hidden>Resend OTP</span>
 
-
+                  
                       <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4" >
                         <button type="submit" id="verifyOtp" class="btn btn-primary ">Sign Up</button>
                         <span id="signupmessage" style="color: red;" ><%= signupmessage %></span>
@@ -106,51 +112,403 @@
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  <!-- Sweetalert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+   <!--Toastify-->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 
-  <script src="javascripts/signupOtpValidation.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+  <!-- <script src="javascripts/signupOtpValidation.js"></script> -->
   <!-- <script src="../../helpers/signupOtpValidHelper.js"></script> -->
 
 
   <script>
-     let otpCounter = document.getElementById("otp-counter")
-     let resendBtn = document.getElementById("resend-btn")
-        function startCountdown() {
-            otpCounter.innerHTML = "Resend OTP in: 60s"
-            seconds = 60
-            countdownTimer = setInterval(() => {
-                seconds--
-                otpCounter.innerHTML = "Resend OTP in: " + seconds + "s"
-                if (seconds <= 0) {
-                    clearInterval(countdownTimer)
-                    otpCounter.hidden = true
-                    resendBtn.hidden = false
-                }
-            }, 1000)
+    const emailErr = document.querySelector('#emailError');
+    const telErr = document.querySelector('#telError');
+    const nameErr = document.querySelector('#nameError');
+    const passwordErr = document.querySelector('#passwordError');
+    const repasswordErr = document.querySelector('#repasswordError');
+
+    const form = document.getElementById("registerForm");
+    const myButton = document.getElementById("sendOtp");
+    const email = document.getElementById("email")
+    const otpmessage = document.getElementById('otpmessage');
+    const otp = document.getElementById('typeOtpX')
+
+    const signUpButton = document.getElementById("verifyOtp");  
+  
+
+    
+
+
+
+    myButton.addEventListener("click", function (e) {
+        e.preventDefault()
+
+            emailErr.textContent = '';
+            telErr.textContent = '';
+            nameErr.textContent = '';
+            passwordErr.textContent = '';
+            repasswordErr.textContent = '';
+
+            // const name = $('input[name="name"]').val().trim();
+            // const email = $('input[name="email"]').val().trim();
+            // const tel = $('input[name="tel"]').val().trim();
+            // const password = $('input[name="password"]').val().trim();
+            // const repassword = $('input[name="repassword"]').val().trim();
+
+            const name = document.getElementsByName("name")[0].value.trim();
+            const email = document.getElementsByName("email")[0].value.trim();
+            const tel = document.getElementsByName("tel")[0].value.trim();;
+            const password = document.getElementsByName("password")[0].value.trim();
+            const repassword = document.getElementsByName("repassword")[0].value.trim();           
+
+            // Validation rules
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const telRegex = /^[6789]\d{9}$/;
+            const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+
+            let valid = true;
+
+            if (!name) {
+                valid = false;
+                nameErr.textContent = 'Please enter a username';
+            } else if (!name.match(/^[a-z ,.'-]+$/i)) {
+                valid = false;
+                nameErr.textContent = 'Username cannot contain numbers/characters '
+            }
+            if (!email) {
+                valid = false;
+                emailErr.textContent = 'Please enter email';
+            }
+            else if (!email.match(emailRegex)) {
+                valid = false;
+                emailErr.textContent = 'Please enter a valid email address';
+            }
+
+            if (!tel.match(telRegex)) {
+                valid = false;
+                telErr.textContent = 'Please enter a valid phone number';
+            }
+
+            else if (!tel) {
+                valid = false;
+                telErr.textContent = 'Please enter Phone number';
+            }
+           
+            if (!password) {
+                valid = false;
+                passwordErr.textContent = 'Please enter password';
+            }
+            else if (password.length < 6 && !password.match(passwordRegex)) {
+                valid = false;
+                passwordErr.textContent = 'Password must be strong';
+            }
+
+            if (!repassword) {
+                valid = false;
+                repasswordErr.textContent = 'Please repeat the password';
+            }
+            else if (repassword.length < 6 && !repassword.match(passwordRegex)) {
+                valid = false;
+                passwordErr.textContent = 'Password must be strong';
+            }
+            else if(repassword !== password){
+              valid = false;
+              repasswordErr.textContent = 'Both passwords must be same';
+            }
+            
+            if (valid) {             
+              //startOTPTimer()
+              fetch("/sendotp", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email: form.email.value , otpmessageId: "otpmessage"}),
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                  if (data.status === "OTP_SEND") {
+                    console.log("OTP sent")
+                    otpmessage.textContent = "OTP sent to your email"
+                    }
+                    else{
+                      otpmessage.textContent = data.status
+                    }
+                })
+                .catch((error) => console.error(error));
+            }
+      });
+        
+
+
+      // for signup functionality
+      signUpButton.addEventListener("click", function (e) {
+        e.preventDefault()
+
+            emailErr.textContent = '';
+            telErr.textContent = '';
+            nameErr.textContent = '';
+            passwordErr.textContent = '';
+
+            const name = document.getElementsByName("name")[0].value.trim();
+            const email = document.getElementsByName("email")[0].value.trim();
+            const tel = document.getElementsByName("tel")[0].value.trim();;
+            const password = document.getElementsByName("password")[0].value.trim();
+            const repassword = document.getElementsByName("repassword")[0].value.trim();           
+
+            // Validation rules
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const telRegex = /^[6789]\d{9}$/;
+            const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+
+
+
+        let isvalid = true;
+
+        if (!name) {
+                isvalid = false;
+                nameErr.textContent = 'Please enter a username';
+            } 
+        else if (!name.match(/^[a-z ,.'-]+$/i)) {
+              isvalid = false;
+                nameErr.textContent = 'Username cannot contain characters '
+            }
+        if (!email) {
+              isvalid = false;
+                emailErr.textContent = 'Please enter email';
+            }
+        else if (!email.match(emailRegex)) {
+              isvalid = false;
+                emailErr.textContent = 'Please enter a valid email address';
+            }
+
+        if (!tel.match(telRegex)) {
+              isvalid = false;
+                telErr.textContent = 'Please enter a valid phone number';
+            }
+
+            else if (!tel) {
+              isvalid = false;
+                telErr.textContent = 'Please enter Phone number';
+            }
+           
+            if (!password) {
+              isvalid = false;
+                passwordErr.textContent = 'Please enter password';
+            }
+            else if (password.length < 6 && !password.match(passwordRegex)) {
+              isvalid = false;
+                passwordErr.textContent = 'Password must be strong';
+            }
+
+            if (!repassword) {
+              isvalid = false;
+                repasswordErr.textContent = 'Please repeat the password';
+            }
+            else if (repassword.length < 6 && !repassword.match(passwordRegex)) {
+              isvalid = false;
+              passwordErr.textContent = 'Password must be strong';
+            }
+            else if(repassword !== password){
+              isvalid = false;
+              repasswordErr.textContent = 'Both passwords must be same';
+            }
+            
+
+
+        if (isvalid) {             
+          emailErr.textContent = '';
+            telErr.textContent = '';
+            nameErr.textContent = '';
+            passwordErr.textContent = '';
+            repasswordErr.textContent = '';
+              fetch("/verifyotp", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ name:form.name.value , phonenumber:form.phonenumber.value ,
+                  email:form.email.value , password:form.password.value, otp:form.otp.value}),
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                  if (data.status === "DONE") {
+                    console.log("act created .. ")
+                    // window.location.href = "/signup"
+                    // signupmessage.textContent = "Account is created.";
+
+                    Swal.fire({
+                    title: 'Account is created',
+                    icon: 'success',
+                    showConfirmButton: true,
+                    }).then(() => {
+                    window.location.href = "/signin";
+                    });
+
+                      // Show a Toastify message
+                      //   Toastify({
+                      //     text: "Account is created", 
+                      //     duration: 4000, // Display for 3 seconds
+                      //     close: true, // Show a close button
+                      //     gravity: "top", // Show the message at the top
+                      //     position: "center", // Position it to the right
+                      //     style: {
+                      //             background: "#008000",
+                      //      },
+                      //     onClick: function () {
+                      //      window.location.href = "/signin"; // Navigate to /signin
+                      //    },
+                      //  }).showToast();
+
+                    }  else{
+                      signupmessage.textContent = "Failed to create user";
+                    }
+                })
+                .catch((error) => console.error(error));
+            }
+        
+      });
+
+//Resend otp, new function:
+
+function startOTPTimer() {
+    const timerElement = document.getElementById('otp-counter');
+    const resendButton = document.getElementById('resend-btn');
+
+    let seconds = 5; 
+    timerElement.style.display = 'inline';
+    resendButton.style.display = 'none';
+
+    const countdown = setInterval(function () {
+        seconds--;
+
+        timerElement.textContent = `Resend OTP in ${seconds} seconds`;
+
+        if (seconds === 0) {
+            clearInterval(countdown); 
+            timerElement.style.display = 'none';
+           // resendButton.style.display = 'inline';
+            resendBtn.hidden = false
+            
         }
+    }, 1000); // Update the timer every second
 
-        startCountdown()
+    
+  }
 
-        resendBtn.addEventListener("click", e => {
-            e.preventDefault()
-            fetch("/resendOtp", {
+           
+
+// Attach the startOTPTimer function to the "Send OTP" button
+document.getElementById('sendOtp').addEventListener('click', startOTPTimer);
+
+// Function to handle the "Resend OTP" button click
+document.getElementById('resend-btn').addEventListener('click', function () {
+    // Add code here to resend the OTP
+      startOTPTimer();
+
+      fetch("/sendotp", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
+                body: JSON.stringify({ email: form.email.value , otpmessageId: "otpmessage"}),
             })
                 .then(response => response.json())
                 .then(data => {
-                    if (data.success) {
+                  if (data.status === "OTP_SEND"){
                         resendBtn.hidden = true
+                        console.log("Resend OTP sent")
+                        otpmessage.textContent  = "Verification email resent"
                         startCountdown()
                         otpCounter.hidden = false
                     } else
-                        otpErr.innerHTML = data.message
+                        otpmessage.textContent = data.status
+                     //   otpError.innerHTML = data.message
                 })
                 .catch(error => {
                     console.error("Error:", error)
                 })
-        })
 
-  </script>
+});
+
+
+
+
+//Resend otp counter
+    //  let otpCounter = document.getElementById("otp-counter")
+    //  let resendBtn = document.getElementById("resend-btn")
+    //     function startCountdown() {
+    //         otpCounter.innerHTML = "Resend OTP in: 60s"
+    //         seconds = 60
+    //         countdownTimer = setInterval(() => {
+    //             seconds--
+    //             otpCounter.innerHTML = "Resend OTP in: " + seconds + "s"
+    //             if (seconds <= 0) {
+    //                 clearInterval(countdownTimer)
+    //                 otpCounter.hidden = true
+    //                 resendBtn.hidden = false
+    //             }
+    //         }, 1000)
+    //     }
+    //    // startCountdown()
+    //     resendBtn.addEventListener("click", e => {
+    //         e.preventDefault()
+    //         startCountdown()
+    //         fetch("/sendotp", {
+    //             method: "POST",
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //             },
+    //             body: JSON.stringify({ email: form.email.value , otpmessageId: "otpmessage"}),
+    //         })
+    //             .then(response => response.json())
+    //             .then(data => {
+    //               if (data.status === "OTP_SEND"){
+    //                     resendBtn.hidden = true
+    //                     console.log("Resend OTP sent")
+    //                     otpmessage.textContent  = "Verification email resent"
+    //                     startCountdown()
+    //                     otpCounter.hidden = false
+    //                 } else
+    //                     otpmessage.textContent = data.status
+    //                  //   otpError.innerHTML = data.message
+    //             })
+    //             .catch(error => {
+    //                 console.error("Error:", error)
+    //             })
+    //     })
+
+</script>
+
+
+
+<!-- 
+  //  var formData = $(this).serialize();
+  //               $.ajax({
+  //                   url: '/register',
+  //                   method: 'POST',
+  //                   data: formData,
+  //                   dataType: 'JSON',
+  //                   success: function (response) {
+  //                       if (response.success) {
+  //                           window.location.href = '/otp';
+  //                       } else if (!response.success) {
+
+  //                           emailErr.textContent = response?.email;
+  //                           telErr.textContent = response?.tel;
+  //                       }
+  //                   },
+  //                   error: function (error) {
+  //                       console.log('Error', error)
+  //                   }
+  //               }); 
+
+
+  //   function validateNumber(event) {
+  //   var input = event.target;
+  //   input.value = input.value.replace(/\D/g, "");
+  //    } -->

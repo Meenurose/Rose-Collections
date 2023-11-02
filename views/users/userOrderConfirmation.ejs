@@ -149,8 +149,14 @@ function cancelOrder(orderId) {
         confirmButtonText: 'Yes, Cancel it!'
     }).then((result) => {
         if (result.isConfirmed) {
-            // If the user confirms the action, perform the deletion
-            window.location.href = `/editorderdetails/${orderId}?action=cancel`;
+            Swal.fire({
+                        title: 'The Order is cancelled',
+                        icon: 'success',
+                        showConfirmButton: true,
+                        }).then(() => {
+                        window.location.href =  `/editorderdetails/${orderId}?action=cancel` ;
+                        });
+           
         }
     });
 }
@@ -166,8 +172,13 @@ function returnOrder(orderId) {
         confirmButtonText: 'Yes, Return it!'
     }).then((result) => {
         if (result.isConfirmed) {
-            // If the user confirms the action, perform the deletion
-            window.location.href = `/editorderdetails/${orderId}?action=return`;
+            Swal.fire({
+                        title: 'The Order is Returned',
+                        icon: 'success',
+                        showConfirmButton: true,
+                        }).then(() => {
+                        window.location.href =  `/editorderdetails/${orderId}?action=return` ;
+                        });            
         }
     });
 }

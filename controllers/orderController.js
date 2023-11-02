@@ -34,8 +34,10 @@ const { configDotenv } = require('dotenv')
   const userOrderConfirmation = async (req, res) => {
     try {
       const category = await categoryModel.find();
+
       const orderId = req.params.id;
       const userId = req.session.user._id;
+
       const user = await userModel.findById(userId);
       const order = await orderModel.findById(orderId).populate("items.productId user");
       console.log(order)
@@ -51,7 +53,8 @@ const { configDotenv } = require('dotenv')
     try { 
       const orderId = req.params.id;
       const action = req.query.action
-      console.log(orderId)
+      
+      console.log("order Id in editOrderDetails cntrle = ",orderId)
       //const order = await orderModel.find(userId : userI)
 
       if (action === 'cancel') {
@@ -63,6 +66,7 @@ const { configDotenv } = require('dotenv')
   
       res.redirect("/orders");
     } catch (error) {
+      console.log("editOrderDetails, error part..")
       console.log(error.message);
       return res.render("users/error404");
     }

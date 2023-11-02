@@ -53,7 +53,7 @@
                                            
                                             <button class="genric-btn danger" onclick="cancelOrder('<%= order._id %>')" >Cancel Order</button></a>
                                         <%} else if(order.orderStatus==='Delivered' ) { %>
-                                            <button class="genric-btn info" onclick="invoiceGenerate('<%= order._id %>')" 
+                                            <button class="genric-btn info"  onclick="invoiceGenerate('<%= order._id %>')" 
                                                 href="#">Download Invoice</button>
                                             <button class="genric-btn warning radius" onclick="returnOrder('<%= order._id %>')" >Return Order</button></a>
                                         <% } %>
@@ -210,6 +210,7 @@
 
 <script>
 
+
 //  function cancelOrder(orderId) {
 //     Swal.fire({
 //         title: 'Are you sure you want to Cancel the order?',
@@ -244,7 +245,10 @@
 
 
 async function cancelOrder(orderId) {
-    const result = await Swal.fire({
+   
+    try{
+      
+        const result = await Swal.fire({
         title: 'Are you sure you want to Cancel the order?',
         text: "You won't be able to revert this!",
         icon: 'warning',
@@ -255,27 +259,41 @@ async function cancelOrder(orderId) {
     });
 
     if (result.isConfirmed) {
-        console.log("Just before cancel toast");
+        console.log("Just before cancel toast / swal");
+       
+            Swal.fire({
+                        title: 'Order is cancelled',
+                        icon: 'success',
+                        showConfirmButton: true,
+                        }).then(() => {
+                        window.location.href =  `/editorderdetails/${orderId}?action=cancel` ;
+                        });
+
+
 
         // Use a Promise to introduce a delay before showing the toast message
-        const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+        // const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-        await delay(1000); // Adjust the delay time (in milliseconds) as needed
+        // await delay(1000); // Adjust the delay time (in milliseconds) as needed
 
-        Toastify({
-            text: 'The order is Cancelled',
-            duration: 3000,
-            gravity: "bottom",
-            position: "center",
-            style: {
-                background: "#FF5350",
-            },
-        }).showToast();
+        // Toastify({
+        //     text: 'The order is Cancelled',
+        //     duration: 3000,
+        //     gravity: "bottom",
+        //     position: "center",
+        //     style: {
+        //         background: "#FF5350",
+        //     },
+        // }).showToast();
 
-        console.log("Before navigation");
-        window.location.href = `/editorderdetails/${orderId}?action=cancel`;
-        console.log("After navigation");
+        // console.log("Before navigation");
+        // window.location.href = `/editorderdetails/${orderId}?action=cancel`;
+        // console.log("After navigation");
+        }
+    } catch(error){
+        console.log(error.message)
     }
+
 }
 
 
@@ -291,8 +309,13 @@ function returnOrder(orderId) {
         confirmButtonText: 'Yes, Return it!'
     }).then((result) => {
         if (result.isConfirmed) {
-            // If the user confirms the action, perform the deletion
-            window.location.href = `/editorderdetails/${orderId}?action=return`;
+            Swal.fire({
+                        title: 'The Order is Returned',
+                        icon: 'success',
+                        showConfirmButton: true,
+                        }).then(() => {
+                        window.location.href =  `/editorderdetails/${orderId}?action=return` ;
+                        });   
         }
     });
 }

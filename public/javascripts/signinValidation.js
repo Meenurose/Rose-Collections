@@ -19,8 +19,7 @@ function validateEmail(email) {
       return; 
     }
     if (validateEmail(email)) {
-      emailError.textContent = ""; // Clear the error message
-      // Perform other form submission actions
+      emailError.textContent = ""; 
     } else {
       emailError.textContent = "Invalid email address! eg.give- test@email.com";
       event.preventDefault();

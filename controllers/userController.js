@@ -111,11 +111,12 @@ const userSendOtp = async (req, res) => {
     // const phone = "+91" + req.body.phonenumber;
     const email = req.body.email;
 
-    if (!validateEmail(email)) {
-      res.json({ status: "Invalid Email. eg: give test@email.com" });
-    } else if (email === "") {
+    if (email === "") {
       res.json({ status: "Email cannot be blank." });
-    } else {
+    }
+    else if (!validateEmail(email)) {
+      res.json({ status: "Invalid Email. eg: give test@email.com" });
+    }   else {
       // const user = await userModel.findOne({ email })                      //commentin, since, this wont work for Signup
       // if(!user){
       //   res.json({ status: "Can't find user with this email." });
@@ -233,18 +234,29 @@ const userResetPassword = async (req, res) => {
   res.render("users/userForgotPswd", { message });
 };
 
+
+
 const userSignedup = async (req, res) => {
   try {
     console.log("In userSignedUp function");
     const phone = "+91" + req.body.phonenumber;
     //await sendVerifyMail(req.body.name, req.body.email, userData._id);
 
-    const otp = req.body.otp;
+    //const otp = req.body.otp;
     //const signupmessage = req.body.signupmessage
 
     //otpVerificationHelper.verifyotp(phone, otp, (status) => {
     //  console.log(status);
     // if (status === "approved") {
+
+    const otpSent = req.session.otpSent.toString();
+    console.log("Otp sent thru mail (in userSignedup func)) = ", otpSent);
+    otpWritten = req.body.otp;
+    console.log("Otp written in the form (in userSignedup func.) = ", otpWritten);
+    let message = {};
+  
+    if (otpSent === otpWritten) {
+
     const { name, phonenumber, email, password } = req.body;
     let data = {
       name: name,
@@ -255,21 +267,27 @@ const userSignedup = async (req, res) => {
     userHelper.addUser(data, (stat) => {
       console.log(stat);
       if (stat == "DONE") {
-        //res.redirect("/signin");
-        res.render("users/userSignUp", { signupmessage: "Account created" });
-      } else {
-        //USER_ALREADY_EXISTS
+        //res.redirect("/signin", { signupmessage: "Account createddd" });       
+       // res.render("users/userSignUp", { signupmessage: "Account created" });
+        //res.render("users/userLandingPage")
+        res.json({ status: "DONE" });
 
-        console.log("User already exists. Please try again with new email");
-        // signupmessage.textcontent = "User already exists. Please try again with new emailllll"
-        res.render("users/userSignUp", {
-          signupmessage: "User already exists. Please try again with new email",
-        });
+      } else {
+           console.log("User already exists. Please try again with new email");
+          // signupmessage.textcontent = "User already exists. Please try again with new emailllll"
+            //res.render("users/userSignUp", {signupmessage: "User already exists. Please try again with new email"});
+            res.json({ status: "NOT DONE" });
       }
     });
     // }
     // });
-  } catch (error) {
+  } else{
+        console.log("Otp incorrect.")
+        res.render("users/userSignUp", {signupmessage: "Otp incorrect"})
+    }
+  } 
+  
+  catch (error) {
     console.log(error.message);
   }
 };
@@ -278,7 +296,8 @@ const userSignedup = async (req, res) => {
 // resend otp
 const userResendOtp = async (req, res) => {
   try {
-      const userId = req.session.guest_id;
+     // const userId = req.session.guest_id;
+      const userId = req.session._id;
       if (!userId)
           return res
               .status(404)
@@ -294,9 +313,11 @@ const userResendOtp = async (req, res) => {
       const email = user.email;
       const name = user.name;
       console.log('user email in userResendOtp ', email)
-      const currentOtp = generateOtp();
+      //const currentOtp = generateOtp();
 
-      req.session.otp = await sendVerifyMail(name, email, currentOtp);
+     // req.session.otp = await sendVerifyMail(name, email, currentOtp);
+
+      req.session.otp = await sendVerifyMail(name, email);
       req.session.time = Date.now();
 
       res.status(200).json({
@@ -312,12 +333,10 @@ const userResendOtp = async (req, res) => {
   }
 };
 
-
-
-const generateOtp = () => {
-  const otp = Math.floor(1000 + Math.random() * 9000).toString();
-  return otp;
-};
+// const generateOtp = () => {
+//   const otp = Math.floor(1000 + Math.random() * 9000).toString();
+//   return otp;
+// };
 
 
 

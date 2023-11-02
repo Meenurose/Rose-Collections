@@ -76,7 +76,7 @@
               maxlength="12"
               value="1"
               title="Quantity:"
-              class="input-text qty"
+              class="input-text qty" disabled
             />
 
             <button
@@ -240,8 +240,9 @@
   myButton.addEventListener("click", function (e) {
     console.log("clicked on add to cart button ");
     console.log("quantity: displayCount.value= ", displayCount.value);
-
-    fetch("/addtocart", {
+    
+    if(displayCount.value> 0) {
+      fetch("/addtocart", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -258,15 +259,24 @@
           icon: "success",
           confirmButtonText: "OK",
         });
-
-        // setTimeout(() => {
-        //   addToCartModal.style.display = "none";
-        // }, 2000);
       })
+     
       .catch((error) => {
         console.log("signing in...");
         window.location.href = "/signin";
       });
+    }
+    else {  // Qty =0
+      Toastify({ text: "Please add Quantity more than zero" ,
+                  duration: 3000,
+                  gravity: "top", 
+                  position: "center",
+                  style: {
+                  background: "#FF5350",
+                    },
+    }).showToast();
+      }
+
   });
 
 
