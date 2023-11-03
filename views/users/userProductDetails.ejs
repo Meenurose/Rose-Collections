@@ -259,7 +259,8 @@
           icon: "success",
           confirmButtonText: "OK",
         });
-      })
+        updateHeader()
+      })      
      
       .catch((error) => {
         console.log("signing in...");
@@ -273,7 +274,7 @@
                   position: "center",
                   style: {
                   background: "#FF5350",
-                    },
+                    },  
     }).showToast();
       }
 

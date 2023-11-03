@@ -70,30 +70,27 @@
 									<li class="nav-item"><a class="nav-link" href="/addaddress">Add Address</a></li>
 								</ul>
 							</li>
-							<!-- <li class="nav-item submenu dropdown active">
-								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-								 aria-expanded="false">Pages</a>
-								<ul class="dropdown-menu">
-									<li class="nav-item active"><a class="nav-link" href="/signin">Signin</a></li> -->
-									<!-- <li class="nav-item"><a class="nav-link" href="tracking.html">Tracking</a></li>
-									<li class="nav-item"><a class="nav-link" href="elements.html">Elements</a></li> -->
-								<!-- </ul>
-							</li> -->
-							<!-- <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li> -->
+							
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
-							<li class="nav-item"><a href="/cart" class="cart"><span class="ti-bag" ></span></a></li>
+							<li class="nav-item cart1">
+								<a href="/cart" class="cart"><span class="fa fa-shopping-cart" aria-hidden="true" ></span></a>
+								<span class="cart-count position-absolute" id="cart-items-count" 
+								style="color:red; font-size:11px;" hidden>0</span> 
+							</li>
+
 							<li class="nav-item">
 								<button class="search"><span class="lnr lnr-magnifier" id="search"></span></button>
 							</li>						
 						</ul>
 						<ul class="nav navbar-nav menu_nav ml-25">
 						<li class="nav-item submenu dropdown active">
-							<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-							 aria-expanded="false">My Account </a>
+							<a href="#" class="nav-link dropdown-toggle fa fa-user" data-toggle="dropdown" role="button" aria-haspopup="true"
+							 aria-expanded="false" aria-hidden="true"></a>
 							<ul class="dropdown-menu">
-								<li class="nav-item "><a class="nav-link" href="/signin">Signin</a></li>
-								<li class="nav-item"><a class="nav-link" href="/signout">Signout</a></li>
+								
+								<li id="login-span" class="nav-item "><a class="nav-link" href="/signin">Signin</a></li>
+								<li id="logout-span" hidden class="nav-item"><a class="nav-link" href="/signout">Signout</a></li>
 							</ul>
 						</li>
 						</ul>
@@ -274,8 +271,6 @@
 
 <script>
 
-
-
     document.addEventListener("DOMContentLoaded", () => {
       const wrapper = document.querySelectorAll(".product");
       wrapper.forEach((item) => {
@@ -287,3 +282,36 @@
     });
   
   </script>
+
+<script>
+	const loginBtn = document.querySelector('#login-span')
+    const logoutBtn = document.querySelector('#logout-span')
+	const cartItemsCount = document.querySelector('#cart-items-count')	
+
+	function updateHeader(){
+        fetch('/get-user', {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.success) {
+                console.log(data)
+               // welcomeText.textContent = `Welcome, ${data.name}`
+                loginBtn.hidden = true
+                logoutBtn.hidden = false
+                
+                if (data.cartItemsCount > 0) {
+                    cartItemsCount.textContent = data.cartItemsCount
+                    cartItemsCount.hidden = false
+                }
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }
+    updateHeader()
+	</script>

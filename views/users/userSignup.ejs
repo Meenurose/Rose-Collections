@@ -76,16 +76,18 @@
                       <div class="d-flex flex-row align-items-center mb-4">
                         <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
                         <div class="form-outline flex-fill mb-0">
-                          <label class="form-label" for="form3Example4c">Enter the OTP</label>
-                          <input type="text" id="typeOtpX" class="form-control" name="otp" />
-                          
+                          <label class="form-label" for="form3Example4c" >Enter the OTP</label>
+                          <div class="row">
+                          <input type="text" id="typeOtpX" class="form-control" style="width: 50%;" name="otp" />
+                          <button class="btn btn-primary small" id="resend-btn" hidden >Resend OTP</button>
+                          </div>
                           <span id="otpError" style="color: red;" ></span>
                         </div>
                       </div>
 
                       <span class="float-end" id="otp-counter"></span>
                       <!-- <span class="float-end" id="resend-btn" style="color: rgb(1, 1, 105);" style="cursor: pointer;" -->
-                      <span id="resend-btn" style="color: rgb(1, 1, 105); cursor: pointer;" hidden>Resend OTP</span>
+                      <!-- <span id="resend-btn" style="color: rgb(1, 1, 105); cursor: pointer;" >Resend OTP</span> -->
 
                   
                       <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4" >
@@ -132,20 +134,43 @@
     const repasswordErr = document.querySelector('#repasswordError');
 
     const form = document.getElementById("registerForm");
-    const myButton = document.getElementById("sendOtp");
+    const sendOtpButton = document.getElementById("sendOtp");
     const email = document.getElementById("email")
     const otpmessage = document.getElementById('otpmessage');
     const otp = document.getElementById('typeOtpX')
 
     const signUpButton = document.getElementById("verifyOtp");  
-  
+ 
+
+
+    sendOtpButton.addEventListener("click", function (e) {
+        e.preventDefault()
+
+        function startOTPTimer() {
+    const timerElement = document.getElementById('otp-counter');
+    const resendButton = document.getElementById('resend-btn');
+
+    let seconds = 5; 
+    timerElement.style.display = 'inline';
+    //resendButton.style.display = 'none';
+    resendBtn.hidden = true
+
+    const countdown = setInterval(function () {
+        seconds--;
+
+        timerElement.textContent = `Resend OTP in ${seconds} seconds`;
+
+        if (seconds === 0) {
+            clearInterval(countdown); 
+            timerElement.style.display = 'none';
+           // resendButton.style.display = 'inline';
+            resendBtn.hidden = false
+            
+        }
+    }, 1000); // Update the timer every second
 
     
-
-
-
-    myButton.addEventListener("click", function (e) {
-        e.preventDefault()
+  }
 
             emailErr.textContent = '';
             telErr.textContent = '';
@@ -221,7 +246,7 @@
             }
             
             if (valid) {             
-              //startOTPTimer()
+             // startOTPTimer()
               fetch("/sendotp", {
                 method: "POST",
                 headers: {
@@ -318,8 +343,6 @@
               repasswordErr.textContent = 'Both passwords must be same';
             }
             
-
-
         if (isvalid) {             
           emailErr.textContent = '';
             telErr.textContent = '';
@@ -375,35 +398,33 @@
 
 //Resend otp, new function:
 
-function startOTPTimer() {
-    const timerElement = document.getElementById('otp-counter');
-    const resendButton = document.getElementById('resend-btn');
+// function startOTPTimer() {
+//     const timerElement = document.getElementById('otp-counter');
+//     const resendButton = document.getElementById('resend-btn');
 
-    let seconds = 5; 
-    timerElement.style.display = 'inline';
-    resendButton.style.display = 'none';
+//     let seconds = 5; 
+//     timerElement.style.display = 'inline';
+//     //resendButton.style.display = 'none';
+//     resendBtn.hidden = true
 
-    const countdown = setInterval(function () {
-        seconds--;
+//     const countdown = setInterval(function () {
+//         seconds--;
 
-        timerElement.textContent = `Resend OTP in ${seconds} seconds`;
+//         timerElement.textContent = `Resend OTP in ${seconds} seconds`;
 
-        if (seconds === 0) {
-            clearInterval(countdown); 
-            timerElement.style.display = 'none';
-           // resendButton.style.display = 'inline';
-            resendBtn.hidden = false
+//         if (seconds === 0) {
+//             clearInterval(countdown); 
+//             timerElement.style.display = 'none';
+//            // resendButton.style.display = 'inline';
+//             resendBtn.hidden = false
             
-        }
-    }, 1000); // Update the timer every second
-
-    
-  }
+//         }
+//     }, 1000); // Update the timer every second    
+//   }
 
            
-
 // Attach the startOTPTimer function to the "Send OTP" button
-document.getElementById('sendOtp').addEventListener('click', startOTPTimer);
+//document.getElementById('sendOtp').addEventListener('click', startOTPTimer);
 
 // Function to handle the "Resend OTP" button click
 document.getElementById('resend-btn').addEventListener('click', function () {

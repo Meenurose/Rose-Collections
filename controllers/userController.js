@@ -14,6 +14,7 @@ const session = require("express-session");
 const mongoose = require("mongoose");
 const bannerModel = require("../models/bannerModel");
 const wishlistModel = require("../models/wishlistModel");
+const { reservationsUrl } = require("twilio/lib/jwt/taskrouter/util");
 
 const userLandingPage = async (req, res) => {
   try {
@@ -340,7 +341,27 @@ const userResendOtp = async (req, res) => {
 
 
 
-/////////////////////////////////////////
+///////////////////////get user for cart icon counter//////////////
+const getUser = async (req, res, next) => {
+  try {
+    const user = req.session.user
+    if (user) {
+      let cart = await cartModel.findOne({ user: user._id }).select('products').lean()
+      if (!cart) cart = await cartModel.create({ user: user._id })
+      res.status(200).json({
+        success: true,
+        name: user.name,
+        id: user._id,
+        cartItemsCount: cart?.products?.length || 0,
+      })
+    } else res.status(401).json({ success: false })
+  } catch (error) {
+    next(error)
+  }
+};
+
+
+//////////////////////////
 
 const userSigninPage = async (req, res) => {
   console.log("In userSigninPage..");
@@ -784,6 +805,9 @@ const userEditAddresspost = async (req, res) => {
     const addressId = req.query.addressId;
     console.log("Address id= req.query.addressId ", addressId);
 
+    const page= req.body.page
+    console.log("Page in userEditAddresspost ", page)
+
     const name = req.body.name;
     const email = req.body.email;
     const phonenumber = req.body.phonenumber;
@@ -809,11 +833,37 @@ const userEditAddresspost = async (req, res) => {
       { new: true }
     );
 
-    res.redirect("/checkout");
+    if(page === 'profile') res.redirect("/userprofile")
+    else     res.redirect("/checkout");
   } catch (error) {
     console.log(error.message);
   }
 };
+
+
+	// Delete Address
+	const userDeleteAddress = async (req, res) => {
+		try {
+			const userId = req.session.user._id
+      const page = req.query.page
+
+			//const addressId = req.body.id
+      const addressId = req.params.addressId
+			const user = await userModel.findById(userId)
+			user.address.pull(addressId)
+			await user.save()
+
+      if(page==='profile')
+        res.redirect("/userprofile")
+      else if(page==='checkout')
+      res.redirect("/checkout")
+			//res.status(200).json({ success: true })
+
+		} catch (error) {
+			next(error)
+		}
+	};
+
 
 ///////////////////////////////////////////////couponss///////////////////////////////////////
 
@@ -1314,6 +1364,7 @@ module.exports = {
   userResetPassword,
   userSignedup,
   userResendOtp,
+  getUser,
   userSigninPage,
   userProductDetails,
   userProductLists,
@@ -1327,6 +1378,7 @@ module.exports = {
   addAlternateAddress,
   userEditAddress,
   userEditAddresspost,
+  userDeleteAddress,
 
   userAddCoupon,
   userAddCouponpost,

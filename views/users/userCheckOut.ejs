@@ -49,13 +49,16 @@
                                 <%= item.city %>, <%= item.state %>, <%= item.pincode %>
                             </p>
                              <!-- Adding an "Edit" button  -->
-                             <div class="edit-button">
-                                
+                             <div class="">
                                 <a href="/editaddress?name=<%= item.name%>&phonenumber=<%= item.phonenumber%>&email=<%= item.email%>&<%= item.address %>&address=<%= item.address %>&city=<%= item.city %>&state=<%= item.state %>&pincode=<%= item.pincode %>&addressId=<%=item._id%>">
 
+                                <!-- <button class="btn btn-primary btn-sm genric-btn info medium">Edit</button> -->
+                                <button class="genric-btn primary-border medium">Edit</button>
+                                 </a>
 
-                                <button class="btn btn-primary btn-sm genric-btn info">Edit</button>
-                            </a>
+                                <button class="genric-btn danger-border medium" onclick="deleteAddress('<%= item._id %>')" 
+                                id="delete-address">Delete</button>
+               
                              </div>
                         </div>
                     </div>
@@ -395,5 +398,33 @@ const applycoupon=document.querySelector('.applycoupon')
     window.location.href=`/usecoupon?total=${totalpricesum.textContent}`
   })
 
+
+  //delete address:
+
+  function deleteAddress(addressId) {
+
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!'
+    }) .then(data => {
+        if (data.isConfirmed) {
+
+            Swal.fire({
+                        title: 'The address is deleted ',
+                        icon: 'success',
+                        showConfirmButton: true,
+                        }).then(() => {
+                        window.location.href = `/deleteaddress/${addressId}?page=checkout` ;
+                        });
+
+        }
+    })
+    .catch(err => console.log(err))
+}
 
  </script>

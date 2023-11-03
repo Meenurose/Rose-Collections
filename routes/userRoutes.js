@@ -24,6 +24,8 @@ userRoute.post('/verifyotp', userController.userSignedup)
 userRoute.post('/resendOtp', userController.userResendOtp)  
 //userRoute.post('/signup', userController.userSignedup)
 
+userRoute.get('/get-user', userController.getUser)
+
 userRoute.get('/forgotpassword', userController.userForgotPswd)
 userRoute.post('/resetpassword', userController.userResetPassword)
 
@@ -55,6 +57,7 @@ userRoute.post('/addaddress', auth.checkSession, userController.userAddAddressPo
 userRoute.post('/addAlternateAddress', auth.checkSession, userController.addAlternateAddress)
 userRoute.get('/editaddress', auth.checkSession, userController.userEditAddress)
 userRoute.post('/editaddress', auth.checkSession, userController.userEditAddresspost)
+userRoute.get('/deleteaddress/:addressId', auth.checkSession, userController.userDeleteAddress)
 
 userRoute.get('/usecoupon', auth.checkSession, userController.userAddCoupon)
 userRoute.post('/addcoupon',  auth.checkSession, userController.userAddCouponpost);

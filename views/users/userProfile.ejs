@@ -72,15 +72,30 @@
 
         <h5 class="text-uppercase" >ADDRESS INFORMATION</h5>
         <div class="mt-4 mb-4 d-flex justify-content-between">
+
+            <div class="bg-light p-3 mb-5">
+                <div class="row">
             
                 <% user.address.forEach(function(item) { %>
-                <div class="border border-2 p-3">
+                <!-- <div class="border border-2 p-3"> -->
+                    <div class="col-lg-6">
+                        <div class="border p-3">
                     <p>Address: <%= item.address %></p>
                     <p>City: <%= item.city %></p>
                     <p>State: <%= item.state %></p>
                     <p>Pincode: <%= item.pincode %></p>
-                </div>
+
+                    <a href="/editaddress?name=<%= item.name%>&phonenumber=<%= item.phonenumber%>&email=<%= item.email%>&<%= item.address %>&address=<%= item.address %>&city=<%= item.city %>&state=<%= item.state %>&pincode=<%= item.pincode %>&addressId=<%=item._id%>&page=profile">
+                        <button class="genric-btn primary-border medium">Edit</button>
+                    </a>
+                    <button class="genric-btn danger-border medium" onclick="deleteAddress('<%= item._id %>')" 
+                        id="delete-address">Delete</button>   
+                        </div>
+                    </div>
+                
                 <% }); %>
+                </div>
+            </div>
               
             <a href="/addaddress"> <button class="genric-btn success-border">+ ADD ADDRESS</button></a>
 
@@ -88,7 +103,34 @@
    
 </div>
 
-
-
-
 <%- include('../partials/userFooter.ejs') %>
+
+<script>
+      function deleteAddress(addressId) {
+
+Swal.fire({
+    title: 'Are you sure?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Yes, delete it!'
+}) .then(data => {
+    if (data.isConfirmed) {
+
+        Swal.fire({
+                    title: 'The address is deleted ',
+                    icon: 'success',
+                    showConfirmButton: true,
+                    }).then(() => {
+                    window.location.href = `/deleteaddress/${addressId}?page=profile` ;
+                    });
+
+    }
+})
+.catch(err => console.log(err))
+}
+
+
+</script>

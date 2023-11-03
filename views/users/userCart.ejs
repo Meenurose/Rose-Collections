@@ -287,7 +287,14 @@ function deleteItem(cartId, productId) {
         confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
         if (result.isConfirmed) {
-            window.location.href = `/cart/${cartId}/product/${productId}`;
+
+            Swal.fire({
+                        title: 'The item is deleted from the cart',
+                        icon: 'success',
+                        showConfirmButton: true,
+                        }).then(() => {
+                        window.location.href = `/cart/${cartId}/product/${productId}` ;
+                        });
         }
     });
 }
