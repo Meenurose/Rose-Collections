@@ -58,6 +58,7 @@ userRoute.post('/addAlternateAddress', auth.checkSession, userController.addAlte
 userRoute.get('/editaddress', auth.checkSession, userController.userEditAddress)
 userRoute.post('/editaddress', auth.checkSession, userController.userEditAddresspost)
 userRoute.get('/deleteaddress/:addressId', auth.checkSession, userController.userDeleteAddress)
+//userRoute.get('/deleteaddressprofile/:addressId', auth.checkSession, userController.userDeleteAddressProfile)
 
 userRoute.get('/usecoupon', auth.checkSession, userController.userAddCoupon)
 userRoute.post('/addcoupon',  auth.checkSession, userController.userAddCouponpost);

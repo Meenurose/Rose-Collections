@@ -35,36 +35,27 @@
 
                 <h5 class="text-uppercase">PROFILE INFORMATION</h5>
 
-                <form action="/userprofile" method="POST" id="userprofileform">
+                <form action="/userprofile" method="" id="userprofileform" >
                     <div class="row mt-3">
                         <div class="col-md-6">
-                            <div class="inputbox mt-3 mr-2"> <input type="text" name="name" class="form-control" required="required" value="<%= user.name %>"> </div>
-                            
+                            <div class="inputbox mt-3 mr-2"> <input type="text" name="name" id="name" class="form-control" required="required" value="<%= user.name %>"> </div>
+                            <span id="nameError" style="color: red;" ></span>
                         </div>
-
-                        <!-- <div class="col-md-6">
-                            <div class="inputbox mt-3 mr-2"> <input type="text" name="lastname" class="form-control"  value=""> </div>
-                            
-                        </div> -->
                     </div>
 
                     <div class="row mt-3">
                         <div class="col-md-6">
-                            <div class="inputbox mt-3 mr-2"> <input type="text" name="email" class="form-control" required="required" value="<%= user.email %>"> </div>
-                            
+                            <div class="inputbox mt-3 mr-2"> <input type="text" name="email" id="email" class="form-control" required="required" value="<%= user.email %>"> </div>
+                            <span id="emailError" style="color: red;;"></span>
                         </div>
 
                         <div class="col-md-6">
-                            <div class="inputbox mt-3 mr-2"> <input type="text" name="phonenumber" class="form-control" required="required" value="<%= user.phonenumber %>"> </div>
-                            
+                            <div class="inputbox mt-3 mr-2"> <input type="text" name="tel" class="form-control" required="required" value="<%= user.phonenumber %>"> </div>
+                            <span id="telError" style="color: red;" ></span>
                         </div>
                     </div>
-
-
-                    <br>
-                  
-                    <button class="genric-btn success" type="submit">UPDATE USER</button>
-              
+                    <br>                  
+                    <button class="genric-btn success" type="submit" id="updateButton">UPDATE USER</button>
                 </form>
             </div>
         </div>
@@ -85,7 +76,7 @@
                     <p>State: <%= item.state %></p>
                     <p>Pincode: <%= item.pincode %></p>
 
-                    <a href="/editaddress?name=<%= item.name%>&phonenumber=<%= item.phonenumber%>&email=<%= item.email%>&<%= item.address %>&address=<%= item.address %>&city=<%= item.city %>&state=<%= item.state %>&pincode=<%= item.pincode %>&addressId=<%=item._id%>&page=profile">
+                    <a href="/editaddress?&name=<%= item.name%>&phonenumber=<%= item.phonenumber%>&email=<%= item.email%>&<%= item.address %>&address=<%= item.address %>&city=<%= item.city %>&state=<%= item.state %>&pincode=<%= item.pincode %>&addressId=<%=item._id%>&page=profile">
                         <button class="genric-btn primary-border medium">Edit</button>
                     </a>
                     <button class="genric-btn danger-border medium" onclick="deleteAddress('<%= item._id %>')" 
@@ -132,5 +123,76 @@ Swal.fire({
 .catch(err => console.log(err))
 }
 
+</script>
+
+
+<script>
+    const updateButton = document.getElementById("updateButton")   
+
+    updateButton.addEventListener("click", function (e) {
+        e.preventDefault()
+
+        const name = document.getElementsByName("name")[0].value.trim();
+        const email = document.getElementsByName("email")[0].value.trim();
+        const tel = document.getElementsByName("tel")[0].value.trim();;
+
+        const form = document.getElementById("userprofileform");
+
+        const emailErr = document.querySelector('#emailError');
+        const telErr = document.querySelector('#telError');
+        const nameErr = document.querySelector('#nameError');
+
+        const telRegex = /^[6789]\d{9}$/;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        let valid = true;
+
+        emailErr.textContent = '';
+        telErr.textContent = '';
+        nameErr.textContent = '';
+
+    if (!email) {
+                valid = false;
+                emailErr.textContent = 'Please enter email';
+            }
+            else if (!email.match(emailRegex)) {
+                valid = false;
+                emailErr.textContent = 'Please enter a valid email address';
+            }
+  
+    if (!name) { 
+                valid = false;
+                nameErr.textContent = 'Please enter a username';
+            } else if (!name.match(/^[a-z ,.'-]+$/i)) {
+                valid = false
+                nameErr.textContent = 'Username cannot contain numbers/characters ';
+            }
+
+    if (!tel.match(telRegex)) {
+                valid = false
+                telErr.textContent = 'Please enter a valid phone number';
+            }
+
+            else if (!tel) {
+                valid = false
+                telErr.textContent = 'Please enter Phone number';
+            }
+          
+            if (valid) {         
+              fetch("/userprofile", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email: form.email.value , phonenumber : form.tel.value}),
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.success) window.location.reload();
+                    else Toastify({ text: data.message }).showToast();
+
+                })
+                .catch((error) => console.error(error));
+            }    
+})
 
 </script>

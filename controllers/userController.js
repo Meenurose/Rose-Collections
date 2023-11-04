@@ -15,6 +15,7 @@ const mongoose = require("mongoose");
 const bannerModel = require("../models/bannerModel");
 const wishlistModel = require("../models/wishlistModel");
 const { reservationsUrl } = require("twilio/lib/jwt/taskrouter/util");
+const { Page } = require("puppeteer");
 
 const userLandingPage = async (req, res) => {
   try {
@@ -681,9 +682,13 @@ const userProfileUpdated = async (req, res) => {
       { email, phonenumber },
       { new: true }
     );
-    res.render("users/userProfile", { user });
+    res.status(200).json({ success: true })
+    //res.render("users/userProfile", { user });
   } catch (error) {
     console.log(error.message);
+    res.status(200).json({ success: false, error: "An error occurred" });
+
+
   }
 };
 
@@ -728,10 +733,11 @@ const userAddAddressPost = async (req, res) => {
       },
       { new: true }
     );
-
-    res.render("users/userProfile", { user });
+    res.status(200).json({ success: true })
+   // res.render("users/userProfile", { user });
   } catch (error) {
     console.log(error.message);
+    res.status(200).json({ success: false, error: "An error occurred" });
   }
 };
 
@@ -774,6 +780,9 @@ const userEditAddress = async (req, res) => {
   try {
     const userId = req.session.user._id;
 
+    const page = req.query.page
+    console.log("Page in userEditAddress...", page);
+
     const name = req.query.name;
     const email = req.query.email;
     const phonenumber = req.query.phonenumber;
@@ -793,6 +802,7 @@ const userEditAddress = async (req, res) => {
       city,
       state,
       pincode,
+      page,
     });
   } catch (error) {
     console.log(error.message);
@@ -801,21 +811,18 @@ const userEditAddress = async (req, res) => {
 
 const userEditAddresspost = async (req, res) => {
   try {
+
     const userId = req.session.user._id;
     const addressId = req.query.addressId;
-    console.log("Address id= req.query.addressId ", addressId);
-
-    const page= req.body.page
-    console.log("Page in userEditAddresspost ", page)
-
+      
     const name = req.body.name;
     const email = req.body.email;
     const phonenumber = req.body.phonenumber;
-
     const address = req.body.address;
     const city = req.body.city;
     const state = req.body.state;
     const pincode = req.body.pincode;
+    const page = req.body.page
 
     const user = await userModel.findOneAndUpdate(
       { _id: userId, "address._id": addressId }, // Match the user and address ID
@@ -833,12 +840,13 @@ const userEditAddresspost = async (req, res) => {
       { new: true }
     );
 
-    if(page === 'profile') res.redirect("/userprofile")
-    else     res.redirect("/checkout");
+    if(page === 'checkout')   res.redirect("/checkout");
+    else res.redirect("/userprofile")
   } catch (error) {
     console.log(error.message);
   }
 };
+
 
 
 	// Delete Address
@@ -853,10 +861,9 @@ const userEditAddresspost = async (req, res) => {
 			user.address.pull(addressId)
 			await user.save()
 
-      if(page==='profile')
-        res.redirect("/userprofile")
-      else if(page==='checkout')
-      res.redirect("/checkout")
+      if(page === 'checkout')   res.redirect("/checkout");
+      else res.redirect("/userprofile")
+      //res.redirect("/checkout")
 			//res.status(200).json({ success: true })
 
 		} catch (error) {

@@ -109,11 +109,17 @@ const adminEditProduct = async (req, res) => {
                       price: req.body.price,
                       mrp: req.body.mrp,
                       status : req.body.status,
-                      'offer.discountPercentage': req.body.offerpercent,
-                      'offer.specialConditions': req.body.offercondn
+                      // 'offer.discountPercentage': req.body.offerpercent,
+                      // 'offer.specialConditions': req.body.offercondn
                     
                   };
-
+                  if (!updatedProductData.offer) {
+                    updatedProductData.offer = {};
+                  }
+              
+                  updatedProductData.offer.discountPercentage = req.body.offerpercent;
+                  updatedProductData.offer.specialConditions = req.body.offercondn;
+    
   
     if (req.files && req.files.length > 0) {
       for (let file of req.files) {

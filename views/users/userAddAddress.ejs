@@ -24,44 +24,47 @@
         <div class="col-md-8">        
             <div class="mt-4 mb-4">
                 <h6 class="text-uppercase">Add Address</h6>
-                <form action="/addaddress" method="POST" id="addaddressform">
+                <form action="/addaddress" method="" id="addaddressform">
                     <!-- adding name, email ,phone num. -->
                     <div class="row mt-3">
                         <div class="col-md-6">
                              <div class="inputbox mt-3 mr-2"> <input type="text" name="name" class="form-control" required="required" placeholder="Name"> </div>
-                        
+                             <span id="nameError" style="color: red;" ></span>
                         </div>
                         <div class="col-md-6">
                             <div class="inputbox mt-3 mr-2"> <input type="email" name="email" class="form-control" required="required" placeholder="Email"> </div>
+                            <span id="emailError" style="color: red;;"></span>
                         </div>
                     </div>
 
                     <div class="row mt-3">
                         <div class="col-md-6">
-                             <div class="inputbox mt-3 mr-2"> <input type="tel" name="phonenumber"
+                             <div class="inputbox mt-3 mr-2"> <input type="tel" name="tel"
                                 oninput="validateNumber(event)" pattern="[0-9]{10}" maxlength="10" 
                                  class="form-control" required="required" placeholder="Phonenumber">
+                                 <span id="telError" style="color: red;" ></span>
                                  </div>                        
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-md-6">
                              <div class="inputbox mt-3 mr-2"> <input type="text" name="address" class="form-control" required="required" placeholder="Address"> </div>
-                        
+                             <span id="addressError" style="color: red;" ></span>
                         </div>
                         <div class="col-md-6">
                             <div class="inputbox mt-3 mr-2"> <input type="text" name="city" class="form-control" required="required" placeholder="City"> </div>
-                        
+                            <span id="cityError" style="color: red;" ></span>
                         </div>   
                     </div>
 
                    <div class="row mt-2">
                         <div class="col-md-6">
                             <div class="inputbox mt-3 mr-2"> <input type="text" name="state" class="form-control" required="required" placeholder="State"> </div>                        
+                            <span id="stateError" style="color: red;" ></span>
                         </div>
                         <div class="col-md-6">
                             <div class="inputbox mt-3 mr-2"> <input type="text" name="pincode" class="form-control" required="required" placeholder="Pincode"> </div>
-                        
+                            <span id="pinError" style="color: red;" ></span>
                         </div>   
                     </div>
                     <br>
@@ -79,10 +82,126 @@
 
 
 <script>
+    const updateButton = document.getElementById("updateAddress")   
 
+    updateButton.addEventListener("click", function (e) {
+        e.preventDefault()
 
+        const name = document.getElementsByName("name")[0].value.trim();
+        const email = document.getElementsByName("email")[0].value.trim();
+        const tel = document.getElementsByName("tel")[0].value.trim();
+        const address = document.getElementsByName("address")[0].value.trim();
+        const city = document.getElementsByName("city")[0].value.trim();
+        const state = document.getElementsByName("state")[0].value.trim();
+        const pincode = document.getElementsByName("pincode")[0].value.trim();
+        
+        const form = document.getElementById("addaddressform");
+
+        const nameErr = document.querySelector('#nameError');
+        const emailErr = document.querySelector('#emailError');
+        const telErr = document.querySelector('#telError');        
+        const addressErr = document.querySelector('#addressError');
+        const cityErr = document.querySelector('#cityError');
+        const stateErr = document.querySelector('#stateError');
+        const pinErr = document.querySelector('#pinError');
+
+        const telRegex = /^[6789]\d{9}$/;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        let valid = true;
+
+        nameErr.textContent = '';
+        emailErr.textContent = '';
+        telErr.textContent = '';
+        addressErr.textContent = '';
+        cityErr.textContent = '';
+        stateErr.textContent = '';
+        pinErr.textContent = '';
+        
+
+    if (!email) {
+                valid = false;
+                emailErr.textContent = 'Please enter email';
+            }
+            else if (!email.match(emailRegex)) {
+                valid = false;
+                emailErr.textContent = 'Please enter a valid email address';
+            }
+  
+    if (!name) { 
+                valid = false;
+                nameErr.textContent = 'Please enter a username';
+            } else if (!name.match(/^[a-z ,.'-]+$/i)) {
+                valid = false
+                nameErr.textContent = 'Username cannot contain numbers/characters ';
+            }
+
+    if (!tel.match(telRegex)) {
+                valid = false
+                telErr.textContent = 'Please enter a valid phone number';
+            }
+
+            else if (!tel) {
+                valid = false
+                telErr.textContent = 'Please enter Phone number';
+            }
+    
+    if (!address) { 
+                valid = false;
+                addressErr.textContent = 'Please enter an address';
+            } 
+
+    if (!city) { 
+                valid = false;
+                cityErr.textContent = 'Please enter city';
+            } else if (!city.match(/^[a-z ,.'-]+$/i)) {
+                valid = false
+                cityErr.textContent = 'City name cannot contain numbers/characters ';
+            }
+
+    if (!state) { 
+                valid = false;
+                stateErr.textContent = 'Please enter state';
+            } else if (!state.match(/^[a-z ,.'-]+$/i)) {
+                valid = false
+                stateErr.textContent = 'Sate name cannot contain numbers/characters ';
+            }
+
+    if (!pincode) {
+                valid = false;
+                pinErr.textContent = 'Please enter Pincode';
+            }
+            else if (!/^\d{6}$/.test(pincode)) {
+                valid = false;
+                pinErr.textContent = 'Pincode must contain only 6 digits';
+            }
+  
+    
+
+            if (valid) {         
+              fetch("/addaddress", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ name: form.name.value, email: form.email.value , phonenumber : form.tel.value,
+                                        address: form.address.value, city: form.city.value,
+                                        state: form.state.value, pincode: form.pincode.value}),
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        //window.location.reload();
+                        window.location.href = "/userprofile";
+                    }
+                    else Toastify({ text: data.message }).showToast();
+
+                })
+                .catch((error) => console.error(error));
+            }    
+})
 
 </script>
+
 
 
 
